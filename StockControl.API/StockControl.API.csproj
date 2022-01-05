@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Infrastucture\" />
     <Folder Include="Mappers\" />
     <Folder Include="Services\" />
     <Folder Include="Repositories\" />
