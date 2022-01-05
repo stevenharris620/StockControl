@@ -1,4 +1,6 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using StockControl.API.Models;
 
 namespace StockControl.API.Extensions
 {
@@ -117,6 +119,10 @@ namespace StockControl.API.Extensions
             //});
         }
 
-
+        public static void AddApplicationDatabaseContext(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+        }
     }
 }

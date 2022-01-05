@@ -17,6 +17,7 @@ builder.Services.AddMappers();
 builder.Services.ConfigureIdentityOptions(); // user details - injectable
 
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddApplicationDatabaseContext(builder.Configuration);
 builder.Services.AddIdentityAuthentication(builder.Configuration);
 
 
