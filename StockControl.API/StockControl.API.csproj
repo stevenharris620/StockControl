@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="DataSeeding\" />
-    <Folder Include="Extensions\" />
     <Folder Include="Infrastucture\" />
     <Folder Include="Mappers\" />
     <Folder Include="Models\" />

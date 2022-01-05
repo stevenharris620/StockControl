@@ -1,11 +1,24 @@
+using StockControl.API.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.ConfigureCors();
+builder.Services.AddSwagger();
+builder.Services.AddBusinessServices();
+builder.Services.AddUnitOfWork();
+builder.Services.AddMappers();
+builder.Services.ConfigureIdentityOptions(); // user details - injectable
+
+builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddIdentityAuthentication(builder.Configuration);
+
 
 var app = builder.Build();
 
@@ -16,6 +29,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("CorsPolicy");
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
