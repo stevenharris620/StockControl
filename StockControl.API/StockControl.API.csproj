@@ -23,4 +23,16 @@
     <ProjectReference Include="..\StockControl.Shared\StockControl.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DataSeeding\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Infrastucture\" />
+    <Folder Include="Mappers\" />
+    <Folder Include="Models\" />
+    <Folder Include="Services\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="Profiles\" />
+  </ItemGroup>
+
 </Project>
