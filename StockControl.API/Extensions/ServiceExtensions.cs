@@ -31,7 +31,7 @@ namespace StockControl.API.Extensions
         }
         public static void AddUnitOfWork(this IServiceCollection services)
         {
-            //services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+            services.AddScoped<IUnitOfWork, EfUnitOfWork>();
         }
 
         public static void ConfigureIdentityOptions(this IServiceCollection services)
