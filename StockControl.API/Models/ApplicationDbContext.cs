@@ -42,7 +42,9 @@ namespace StockControl.API.Models
                 {
                     Id = "8e445865-a24d-4543-a6c6-9443d048cdb9", // primary key
                     Email = "andrew@cwmlabs.com",
+                    NormalizedEmail = "ANDREW@CWMLABS.COM",
                     UserName = "andrew@cwmlabs.com",
+                    NormalizedUserName = "ANDREW@CWMLABS.COM",
                     FirstName = "Andrew",
                     LastName = "Admin",
                     PasswordHash = hasher.HashPassword(null, "Admin.123")
@@ -51,7 +53,9 @@ namespace StockControl.API.Models
                 {
                     Id = "1e445865-a24d-4543-a6c6-9443d048cdb9", // primary key
                     Email = "uriah@cwmlabs.com",
+                    NormalizedEmail = "URIAH@CWMLABS.COM",
                     UserName = "uriah@cwmlabs.com",
+                    NormalizedUserName = "URIAH@CWMLABS.COM",
                     FirstName = "Uriah",
                     LastName = "User",
                     PasswordHash = hasher.HashPassword(null, "User.123")

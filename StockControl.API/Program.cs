@@ -30,6 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.ConfigureCustomExceptionMiddleware(); // handle exceptions in one place
+
 app.UseCors("CorsPolicy");
 
 app.UseAuthentication();

@@ -3,8 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StockControl.API.Exceptions.CustomExceptionMiddleware;
 using StockControl.API.Infrastucture;
 using StockControl.API.Models;
+using StockControl.API.Repositories;
+using StockControl.API.Services;
 using System.Security.Claims;
 using System.Text;
 
@@ -59,7 +62,7 @@ namespace StockControl.API.Extensions
 
         public static void AddBusinessServices(this IServiceCollection services)
         {
-
+            services.AddScoped<IUserService, UserService>();
         }
 
         public static void AddMappers(this IServiceCollection services)
@@ -131,7 +134,7 @@ namespace StockControl.API.Extensions
 
         public static void ConfigureCustomExceptionMiddleware(this IApplicationBuilder app)
         {
-            //app.UseMiddleware<ExceptionMiddleware>();
+            app.UseMiddleware<ExceptionMiddleware>();
         }
     }
 }
