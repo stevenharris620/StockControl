@@ -64,7 +64,7 @@ namespace StockControl.API.Extensions
         public static void AddBusinessServices(this IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ISupplierRepository, SupplierRepository>();
+            services.AddScoped<ISupplierService, SupplierService>();
         }
 
         public static void AddMappers(this IServiceCollection services)
