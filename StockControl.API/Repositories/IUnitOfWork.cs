@@ -7,6 +7,7 @@ public interface IUnitOfWork
 {
     IUserRepository Users { get; }
     ISupplierRepository Suppliers { get; }
+    IPartRepository Parts { get; }
 
     Task CommitChangesAsync(string userId);
 }
@@ -22,6 +23,7 @@ public class EfUnitOfWork : IUnitOfWork
 
     private IdentityUserRepository _users;
     private SupplierRepository _suppliers;
+    private PartRepository _parts;
 
     public EfUnitOfWork(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,
         ApplicationDbContext db)
@@ -33,6 +35,7 @@ public class EfUnitOfWork : IUnitOfWork
 
     public IUserRepository Users => _users ??= new IdentityUserRepository(_userManager, _roleManager);
     public ISupplierRepository Suppliers => _suppliers ??= new SupplierRepository(_db);
+    public IPartRepository Parts => _parts ??= new PartRepository(_db);
 
     public async Task CommitChangesAsync(string userId)
     {
