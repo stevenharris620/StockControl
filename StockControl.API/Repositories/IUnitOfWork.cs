@@ -6,6 +6,9 @@ namespace StockControl.API.Repositories;
 public interface IUnitOfWork
 {
     IUserRepository Users { get; }
+    ISupplierRepository Suppliers { get; }
+
+    Task CommitChangesAsync(string userId);
 }
 
 /// <summary>
@@ -29,7 +32,7 @@ public class EfUnitOfWork : IUnitOfWork
     }
 
     public IUserRepository Users => _users ??= new IdentityUserRepository(_userManager, _roleManager);
-    public ISupplierRepository Suppliers => _suppliers ??= new SupplierRepository();
+    public ISupplierRepository Suppliers => _suppliers ??= new SupplierRepository(_db);
 
     public async Task CommitChangesAsync(string userId)
     {

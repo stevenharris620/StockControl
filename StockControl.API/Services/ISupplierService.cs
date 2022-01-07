@@ -1,4 +1,8 @@
-﻿using StockControl.API.Models;
+﻿using StockControl.API.Exceptions;
+using StockControl.API.Infrastucture;
+using StockControl.API.Mappers;
+using StockControl.API.Models;
+using StockControl.API.Repositories;
 using StockControl.Shared.Requests;
 using StockControl.Shared.Response;
 
@@ -16,28 +20,77 @@ public interface ISupplierService
 
 public class SupplierService : ISupplierService
 {
-    public Task<Supplier> CreateAsync(SupplierDetail model)
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ISupplierMapper _supplierMapper;
+    private readonly IdentityOptions _identityOptions;
+
+    public SupplierService(IUnitOfWork unitOfWork, ISupplierMapper supplierMapper, IdentityOptions identityOptions)
     {
-        throw new NotImplementedException();
+        _unitOfWork = unitOfWork;
+        _supplierMapper = supplierMapper;
+        _identityOptions = identityOptions;
     }
 
-    public Task<Supplier> GetByIdAsync(string id)
+    public async Task<Supplier> CreateAsync(SupplierDetail model)
     {
-        throw new NotImplementedException();
+        var supplier = _supplierMapper.Map_SupplierDetail_To_Supplier(model, new Supplier());
+
+        await _unitOfWork.Suppliers.CreateAsync(supplier);
+        await _unitOfWork.CommitChangesAsync(_identityOptions.UserId);
+
+        return supplier;
+    }
+
+    public async Task<Supplier> GetByIdAsync(string id)
+    {
+        var supplier = await _unitOfWork.Suppliers.GetByIdAsync(id);
+        if (supplier == null) throw new NotFoundException($"Supplier with Id {id} cannot be found");
+
+        return supplier;
     }
 
     public PagedList<SupplierDetail> GetSuppliersAsync(string query, int pageNumber = 1, int pageSize = 10)
     {
-        throw new NotImplementedException();
+        if (pageNumber < 1) pageNumber = 1;
+
+        var suppliers = _unitOfWork.Suppliers.GetAll().AsQueryable();
+
+        if (!string.IsNullOrEmpty(query))
+            suppliers = suppliers.Where(c =>
+                c.Name!.ToLower().Contains(query.ToLower()) || c.Email!.ToLower().Contains(query.ToLower()));
+
+        var totalRecords = suppliers.Count();
+
+        suppliers = suppliers.OrderBy(x => x.Name);
+
+        var pagedList = new PagedList<SupplierDetail>(
+            suppliers.Select(p => _supplierMapper.Map_Supplier_To_SupplierDetail(p, new SupplierDetail())), pageNumber, pageSize);
+
+        return pagedList;
+
     }
 
-    public Task<Supplier> RemoveAsync(string id)
+    public async Task<Supplier> RemoveAsync(string id)
     {
-        throw new NotImplementedException();
+        var supplier = await _unitOfWork.Suppliers.GetByIdAsync(id);
+        if (supplier == null) throw new NotFoundException($"Supplier with Id {id} cannot be found");
+
+        _unitOfWork.Suppliers.Remove(supplier);
+        await _unitOfWork.CommitChangesAsync(_identityOptions.UserId);
+
+        return supplier;
     }
 
-    public Task<Supplier> UpdateAsync(SupplierDetail model)
+    public async Task<Supplier> UpdateAsync(SupplierDetail model)
     {
-        throw new NotImplementedException();
+        var supplier = await _unitOfWork.Suppliers.GetByIdAsync(model.Id);
+
+        if (supplier == null) throw new NotFoundException($"Supplier with Id {model.Id} cannot be found");
+
+        supplier = _supplierMapper.Map_SupplierDetail_To_Supplier(model, supplier);
+
+        await _unitOfWork.CommitChangesAsync(_identityOptions.UserId);
+
+        return supplier;
     }
 }
