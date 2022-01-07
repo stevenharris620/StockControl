@@ -18,6 +18,7 @@ public class EfUnitOfWork : IUnitOfWork
     private readonly ApplicationDbContext _db;
 
     private IdentityUserRepository _users;
+    private SupplierRepository _suppliers;
 
     public EfUnitOfWork(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,
         ApplicationDbContext db)
@@ -28,6 +29,7 @@ public class EfUnitOfWork : IUnitOfWork
     }
 
     public IUserRepository Users => _users ??= new IdentityUserRepository(_userManager, _roleManager);
+    public ISupplierRepository Suppliers => _suppliers ??= new SupplierRepository();
 
     public async Task CommitChangesAsync(string userId)
     {
