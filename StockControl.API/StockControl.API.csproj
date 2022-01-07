@@ -26,6 +26,7 @@
   <ItemGroup>
     <Folder Include="Repositories\" />
     <Folder Include="Profiles\" />
+    <Folder Include="Services\Utilities\" />
   </ItemGroup>
 
 </Project>
