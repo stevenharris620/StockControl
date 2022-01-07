@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StockControl.API.Exceptions.CustomExceptionMiddleware;
 using StockControl.API.Infrastucture;
+using StockControl.API.Mappers;
 using StockControl.API.Models;
 using StockControl.API.Repositories;
 using StockControl.API.Services;
@@ -68,7 +69,7 @@ namespace StockControl.API.Extensions
 
         public static void AddMappers(this IServiceCollection services)
         {
-
+            services.AddScoped<ISupplierMapper, SupplierMapper>();
         }
 
         public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
