@@ -31,6 +31,13 @@ public class SupplierService : ISupplierService
         _identityOptions = identityOptions;
     }
 
+    public async Task<Supplier> GetByIdAsync(string id)
+    {
+        var supplier = await _unitOfWork.Suppliers.GetByIdAsync(id);
+        if (supplier == null) throw new NotFoundException($"Supplier with Id {id} cannot be found");
+
+        return supplier;
+    }
     public async Task<Supplier> CreateAsync(SupplierDetail model)
     {
         var supplier = _supplierMapper.Map_SupplierDetail_To_Supplier(model, new Supplier());
@@ -40,11 +47,26 @@ public class SupplierService : ISupplierService
 
         return supplier;
     }
+    public async Task<Supplier> UpdateAsync(SupplierDetail model)
+    {
+        var supplier = await _unitOfWork.Suppliers.GetByIdAsync(model.Id);
 
-    public async Task<Supplier> GetByIdAsync(string id)
+        if (supplier == null) throw new NotFoundException($"Supplier with Id {model.Id} cannot be found");
+
+        supplier = _supplierMapper.Map_SupplierDetail_To_Supplier(model, supplier);
+
+        await _unitOfWork.CommitChangesAsync(_identityOptions.UserId);
+
+        return supplier;
+    }
+
+    public async Task<Supplier> RemoveAsync(string id)
     {
         var supplier = await _unitOfWork.Suppliers.GetByIdAsync(id);
         if (supplier == null) throw new NotFoundException($"Supplier with Id {id} cannot be found");
+
+        _unitOfWork.Suppliers.Remove(supplier);
+        await _unitOfWork.CommitChangesAsync(_identityOptions.UserId);
 
         return supplier;
     }
@@ -68,29 +90,5 @@ public class SupplierService : ISupplierService
 
         return pagedList;
 
-    }
-
-    public async Task<Supplier> RemoveAsync(string id)
-    {
-        var supplier = await _unitOfWork.Suppliers.GetByIdAsync(id);
-        if (supplier == null) throw new NotFoundException($"Supplier with Id {id} cannot be found");
-
-        _unitOfWork.Suppliers.Remove(supplier);
-        await _unitOfWork.CommitChangesAsync(_identityOptions.UserId);
-
-        return supplier;
-    }
-
-    public async Task<Supplier> UpdateAsync(SupplierDetail model)
-    {
-        var supplier = await _unitOfWork.Suppliers.GetByIdAsync(model.Id);
-
-        if (supplier == null) throw new NotFoundException($"Supplier with Id {model.Id} cannot be found");
-
-        supplier = _supplierMapper.Map_SupplierDetail_To_Supplier(model, supplier);
-
-        await _unitOfWork.CommitChangesAsync(_identityOptions.UserId);
-
-        return supplier;
     }
 }
