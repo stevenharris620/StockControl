@@ -66,6 +66,7 @@ namespace StockControl.API.Extensions
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ISupplierService, SupplierService>();
+            services.AddScoped<IPartService, PartService>();
 
 
             services.AddScoped<IImageService, IImageService>();
