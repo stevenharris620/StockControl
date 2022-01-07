@@ -1,4 +1,5 @@
 ﻿using StockControl.API.Models;
+using StockControl.Shared.Requests;
 
 namespace StockControl.API.Services;
 
