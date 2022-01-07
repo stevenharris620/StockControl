@@ -9,6 +9,7 @@ using StockControl.API.Mappers;
 using StockControl.API.Models;
 using StockControl.API.Repositories;
 using StockControl.API.Services;
+using StockControl.API.Services.Utilities;
 using System.Security.Claims;
 using System.Text;
 
@@ -65,11 +66,15 @@ namespace StockControl.API.Extensions
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ISupplierService, SupplierService>();
+
+
+            services.AddScoped<IImageService, IImageService>();
         }
 
         public static void AddMappers(this IServiceCollection services)
         {
             services.AddScoped<ISupplierMapper, SupplierMapper>();
+            services.AddScoped<IPartsMapper, PartsMapper>();
         }
 
         public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)

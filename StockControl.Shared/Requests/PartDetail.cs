@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StockControl.Shared.Requests
 {
-    public class PartsDetail
+    public class PartDetail
     {
         public string Id { get; set; }
         [Required] public string? Name { get; set; }

@@ -16,7 +16,7 @@ public class Part : UserRecord
 
     public byte[] Image { get; set; }
 
-    public string SupplierId { get; set; }
+    public string? SupplierId { get; set; }
     public Supplier Supplier { get; set; }
 
 }
