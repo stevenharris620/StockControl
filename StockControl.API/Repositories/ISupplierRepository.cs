@@ -7,7 +7,7 @@ public interface ISupplierRepository
     Task CreateAsync(Supplier supplier);
     void Remove(Supplier supplier);
     IEnumerable<Supplier> GetAll();
-    Task<Supplier> GetByIdAsync(string id);
+    Task<Supplier?> GetByIdAsync(string id);
 }
 
 public class SupplierRepository : ISupplierRepository
@@ -21,21 +21,21 @@ public class SupplierRepository : ISupplierRepository
 
     public async Task CreateAsync(Supplier supplier)
     {
-        await _context.Suppliers.AddAsync(supplier);
+        await _context.Suppliers!.AddAsync(supplier);
     }
 
     public void Remove(Supplier supplier)
     {
-        _context.Suppliers.Remove(supplier);
+        _context.Suppliers!.Remove(supplier);
     }
 
     public IEnumerable<Supplier> GetAll()
     {
-        return _context.Suppliers;
+        return _context.Suppliers!;
     }
 
-    public async Task<Supplier> GetByIdAsync(string id)
+    public async Task<Supplier?> GetByIdAsync(string id)
     {
-        return await _context.Suppliers.FindAsync(id);
+        return await _context.Suppliers!.FindAsync(id);
     }
 }
