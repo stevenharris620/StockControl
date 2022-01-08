@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using System.Security.Claims
 
 <PageTitle>Index</PageTitle>
 
@@ -7,3 +8,17 @@
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+<AuthorizeView>
+	<Authorized>
+		<h2>Welcome @context.User.FindFirst(ClaimTypes.GivenName).Value</h2>
+		
+		@foreach (var claim in context.User.Claims)
+		{
+			<h5>@claim.Value</h5>
+		}
+	</Authorized>
+	<NotAuthorized>
+		<MudLink Href="/authentication/login">Login</MudLink>
+	</NotAuthorized>
+</AuthorizeView>
