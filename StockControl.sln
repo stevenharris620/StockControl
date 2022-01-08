@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.31911.260
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockControl", "StockControl\StockControl.csproj", "{D2B76173-91AD-418E-AB97-353DC695DECD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockControl", "StockControl\StockControl.csproj", "{D2B76173-91AD-418E-AB97-353DC695DECD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockControl.API", "StockControl.API\StockControl.API.csproj", "{B831840E-0EA9-479D-8EAB-E3BDA2B00A11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockControl.API", "StockControl.API\StockControl.API.csproj", "{B831840E-0EA9-479D-8EAB-E3BDA2B00A11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockControl.Shared", "StockControl.Shared\StockControl.Shared.csproj", "{46741D43-B21B-457C-8C10-E02C7375A5E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockControl.Shared", "StockControl.Shared\StockControl.Shared.csproj", "{46741D43-B21B-457C-8C10-E02C7375A5E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
