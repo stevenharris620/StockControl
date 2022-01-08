@@ -25,7 +25,7 @@ namespace StockControl.Components
             {
                 case System.Net.HttpStatusCode.OK:
                     var result = await response.Content.ReadFromJsonAsync<ApiResponse<RegisterResponse>>();
-                    NavigationManager.NavigateTo("/");
+                    NavigationManager.NavigateTo("/authentication/login"); // TODO just login user in!
                     break;
                 case System.Net.HttpStatusCode.BadRequest:
                     var errorResult = await response.Content.ReadFromJsonAsync<ApiResponse<RegisterResponse>>();
@@ -41,7 +41,6 @@ namespace StockControl.Components
         private void RedirectToLogin()
         {
             NavigationManager.NavigateTo("/authentication/login");
-
         }
     }
 }
