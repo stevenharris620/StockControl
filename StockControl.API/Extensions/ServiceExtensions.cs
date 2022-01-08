@@ -69,7 +69,7 @@ namespace StockControl.API.Extensions
             services.AddScoped<IPartService, PartService>();
 
 
-            services.AddScoped<IImageService, IImageService>();
+            services.AddScoped<IImageService, ImageService>();
         }
 
         public static void AddMappers(this IServiceCollection services)
