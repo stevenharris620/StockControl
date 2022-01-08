@@ -27,8 +27,8 @@ namespace StockControl.API.Models
 
             //Seeding Manager & User role to AspNetRoles table
             modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole { Id = "2c5e174e-3b0e-446f-86af-483d56fd7210", Name = "Manager" },
-                new IdentityRole { Id = "4c5e174e-3b0e-446f-86af-483d56fd7210", Name = "User" }
+                new IdentityRole { Id = "2c5e174e-3b0e-446f-86af-483d56fd7210", Name = "Manager", NormalizedName = "MANAGER" },
+                new IdentityRole { Id = "4c5e174e-3b0e-446f-86af-483d56fd7210", Name = "User", NormalizedName = "USER" }
                 );
 
 

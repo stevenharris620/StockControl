@@ -46,7 +46,7 @@ namespace StockControl.API.Services
                 UserName = model.Email
             };
 
-            await _unitOfWork.Users.CreateUserAsync(user, model.Password, "User"); // default new user to User role
+            await _unitOfWork.Users.CreateUserAsync(user, model.Password, "USER"); // default new user to User role
 
             return new RegisterResponse
             {

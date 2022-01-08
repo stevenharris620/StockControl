@@ -47,10 +47,10 @@ namespace StockControl.Components
             _isBusy = false;
         }
 
-        private Task RedirectToRegister()
+        private void RedirectToRegister()
         {
-            throw new NotImplementedException();
+            NavigationManager.NavigateTo("/authentication/register");
         }
-
     }
+
 }
