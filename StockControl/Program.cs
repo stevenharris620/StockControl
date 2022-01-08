@@ -10,7 +10,12 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 // nuget Microsoft.Extensions.Http
 builder.Services.AddHttpClient("StockAPI", client =>
-    client.BaseAddress = new Uri("http://localhost:5199")).AddHttpMessageHandler<AuthorizationMessageHandler>();
+{
+    client.BaseAddress = new Uri("http://localhost:5199");
+}).AddHttpMessageHandler<AuthorizationMessageHandler>();
+
+builder.Services.AddTransient<AuthorizationMessageHandler>();
+builder.Services.AddScoped(sp => sp.GetService<IHttpClientFactory>().CreateClient("StockAPI")); // httpclient DI
 
 builder.Services.AddMudServices();
 builder.Services.AddBlazoredLocalStorage();
