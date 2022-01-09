@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using StockControl;
+using StockControl.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -22,6 +23,8 @@ builder.Services.AddMudServices();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddAuthorizationCore(); // auth attribute
 builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthenticationStateProvider>();
+
+builder.Services.AddScoped<ISupplierService, SuppliersService>(); // TODO move to ext class
 
 await builder.Build().RunAsync();
 
