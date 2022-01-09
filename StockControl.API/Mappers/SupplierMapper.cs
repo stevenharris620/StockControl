@@ -17,7 +17,7 @@ namespace StockControl.API.Mappers
             supplierDetail.Name = supplier.Name;
             supplierDetail.Add1 = supplier.Add1;
             supplierDetail.Add2 = supplier.Add2;
-            supplierDetail.Add2 = supplier.Add2;
+            supplierDetail.Add3 = supplier.Add3;
             supplierDetail.Postcode = supplier.Postcode;
             supplierDetail.Email = supplier.Email;
             supplierDetail.Website = supplier.Website;
@@ -33,7 +33,7 @@ namespace StockControl.API.Mappers
             supplier.Name = supplierDetail.Name;
             supplier.Add1 = supplierDetail.Add1;
             supplier.Add2 = supplierDetail.Add2;
-            supplier.Add2 = supplierDetail.Add2;
+            supplier.Add3 = supplierDetail.Add3;
             supplier.Postcode = supplierDetail.Postcode;
             supplier.Email = supplierDetail.Email;
             supplier.Website = supplierDetail.Website;

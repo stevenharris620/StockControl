@@ -1,0 +1,44 @@
+﻿@using StockControl.Shared.Requests
+ @namespace StockControl.Components
+
+ <MudTable ServerData="@(new Func<TableState, Task<TableData<SupplierDetail>>>(ServerReloadAsync))"
+		  Dense="true" Hover="true" @ref="_table">
+	<ToolBarContent>
+		<MudText Typo="Typo.h6">Zones</MudText>
+		<MudSpacer />
+		<MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+					  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+	</ToolBarContent>
+	<HeaderContent>
+		@*<MudTh><MudTableSortLabel SortLabel="image_field" T="SupplierDetail">Image</MudTableSortLabel></MudTh>*@
+		<MudTh><MudTableSortLabel SortLabel="name_field" T="SupplierDetail">Name</MudTableSortLabel></MudTh>
+		<MudTh><MudTableSortLabel SortLabel="contact_field" T="SupplierDetail">Contact</MudTableSortLabel></MudTh>
+		<MudTh><MudTableSortLabel SortLabel="email_field" T="SupplierDetail">Email</MudTableSortLabel></MudTh>
+		<MudTh><MudTableSortLabel SortLabel="website_field" T="SupplierDetail">Website</MudTableSortLabel></MudTh>
+		<MudTh><MudTableSortLabel SortLabel="action_field" T="SupplierDetail">Actions</MudTableSortLabel></MudTh>
+	</HeaderContent>
+	<RowTemplate>
+		@*<MudTd DataLabel="Name">@context.Image</MudTd>*@
+		<MudTd DataLabel="Name">@context.Name</MudTd>
+		<MudTd DataLabel="Contact">@context.Contact</MudTd>
+		<MudTd DataLabel="Email">@context.Email</MudTd>
+		<MudTd DataLabel="Website">@context.Website</MudTd>
+		<MudTd DataLabel="Actions">
+			<MudIconButton Icon="@Icons.Material.Filled.Preview" Color="Color.Success"
+						   OnClick="async ()=> await OnViewClicked.InvokeAsync(context)" />
+			<MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default"
+						   OnClick="async ()=> await OnEditClicked.InvokeAsync(context)" />
+			<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error"
+						   OnClick="async ()=> await OnDeleteClicked.InvokeAsync(context)" />
+		</MudTd>
+	</RowTemplate>
+	<NoRecordsContent>
+		<MudText>No matching records found</MudText>
+	</NoRecordsContent>
+	<LoadingContent>
+		<MudText>Loading...</MudText>
+	</LoadingContent>
+	<PagerContent>
+		<MudTablePager />
+	</PagerContent>
+</MudTable>

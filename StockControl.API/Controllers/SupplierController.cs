@@ -35,7 +35,7 @@ namespace StockControl.API.Controllers
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(ApiResponse<SupplierDetail>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
-        public async Task<IActionResult> Create([FromForm] SupplierDetail model)
+        public async Task<IActionResult> Create(SupplierDetail model)
         {
             var supplier = await _supplierService.CreateAsync(model);
 

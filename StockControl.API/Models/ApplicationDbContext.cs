@@ -103,6 +103,8 @@ namespace StockControl.API.Models
                             userRecord.ModifiedByUserId = _userId;
                             break;
                         case EntityState.Added:
+                            userRecord.ModifiedDate = DateTime.UtcNow;
+                            userRecord.ModifiedByUserId = _userId;
                             userRecord.CreationDate = DateTime.UtcNow;
                             userRecord.CreatedByUserId = _userId;
                             break;

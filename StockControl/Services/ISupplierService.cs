@@ -1,13 +1,15 @@
 ﻿using StockControl.Services.Exceptions;
 using StockControl.Shared.Requests;
 using StockControl.Shared.Response;
+using System.Diagnostics;
 using System.Net.Http.Json;
+
 
 namespace StockControl.Services;
 
 public interface ISupplierService
 {
-    Task<ApiResponse<PagedList<SupplierDetail>>> GetSuppliersAsync(string query = null, int pageNumber = 1, int pageSize = 10);
+    Task<ApiResponse<PagedList<SupplierDetail>>> GetSuppliersAsync(string query = "", int pageNumber = 1, int pageSize = 10);
     Task<ApiResponse<SupplierDetail>> GetByIdAsync(string id);
     Task<ApiResponse<SupplierDetail>> CreateAsync(SupplierDetail supplierDetail);
     Task<ApiResponse<SupplierDetail>> EditAsync(SupplierDetail supplierDetail);
@@ -25,40 +27,66 @@ public class SuppliersService : ISupplierService
 
     public async Task<ApiResponse<SupplierDetail>> CreateAsync(SupplierDetail supplierDetail)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/supplier", supplierDetail);
-        return await GetResponse(response);
+
+
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/Supplier", supplierDetail);
+            throw new Exception("TEST1");
+            return await GetResponse(response);
+        }
+        catch (Exception e)
+        {
+            throw new Exception("TESTy");
+            Console.WriteLine(e);
+            throw;
+        }
+
     }
 
     public async Task<ApiResponse<SupplierDetail>> DeleteAsync(string id)
     {
-        var response = await _httpClient.DeleteAsync($"api/supplier/{id}");
+        var response = await _httpClient.DeleteAsync($"/api/supplier/{id}");
         return await GetResponse(response);
     }
 
     public async Task<ApiResponse<SupplierDetail>> EditAsync(SupplierDetail supplierDetail)
     {
-        var response = await _httpClient.PutAsJsonAsync("api/supplier", supplierDetail);
+        Debug.Write("------------->" + supplierDetail.Name);
+        var response = await _httpClient.PutAsJsonAsync("/api/supplier", supplierDetail);
         return await GetResponse(response);
     }
 
     public async Task<ApiResponse<SupplierDetail>> GetByIdAsync(string id)
     {
-        var response = await _httpClient.GetAsync($"api/supplier/{id}");
+        var response = await _httpClient.GetAsync($"/api/supplier/{id}");
         return await GetResponse(response);
     }
 
-    public async Task<ApiResponse<PagedList<SupplierDetail>>> GetSuppliersAsync(string query = null, int pageNumber = 1, int pageSize = 10)
+    public async Task<ApiResponse<PagedList<SupplierDetail>>> GetSuppliersAsync(string query, int pageNumber = 1, int pageSize = 10)
     {
-        var response = await _httpClient.GetAsync($"api/supplier/suppliers?query={query}&pageNumber={pageNumber}&pageSize={pageSize}");
-        if (response.IsSuccessStatusCode)
+        try
         {
-            var result = await response.Content.ReadFromJsonAsync<ApiResponse<PagedList<SupplierDetail>>>();
-            return result;
+            if (pageNumber < 1) pageNumber = 1;
+            var response = await _httpClient.GetAsync($"api/supplier/suppliers?query={query}&pageNumber={pageNumber}&pageSize={pageSize}");
+
+
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<ApiResponse<PagedList<SupplierDetail>>>();
+                return result;
+            }
+            else
+            {
+                var errorResponse = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new ApiException(errorResponse, response.StatusCode);
+            }
         }
-        else
+        catch (Exception e)
         {
-            var errorResponse = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
-            throw new ApiException(errorResponse, response.StatusCode);
+            Console.WriteLine(e);
+            throw;
         }
     }
 

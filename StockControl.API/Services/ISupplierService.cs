@@ -42,8 +42,18 @@ public class SupplierService : ISupplierService
     {
         var supplier = _supplierMapper.Map_SupplierDetail_To_Supplier(model, new Supplier());
 
-        await _unitOfWork.Suppliers.CreateAsync(supplier);
-        await _unitOfWork.CommitChangesAsync(_identityOptions.UserId);
+        try
+        {
+            await _unitOfWork.Suppliers.CreateAsync(supplier);
+            await _unitOfWork.CommitChangesAsync(_identityOptions.UserId);
+            //await _unitOfWork.CommitChangesAsync("8e445865-a24d-4543-a6c6-9443d048cdb9");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
 
         return supplier;
     }
@@ -77,9 +87,9 @@ public class SupplierService : ISupplierService
 
         var suppliers = _unitOfWork.Suppliers.GetAll().AsQueryable();
 
-        if (!string.IsNullOrEmpty(query))
-            suppliers = suppliers.Where(c =>
-                c.Name!.ToLower().Contains(query.ToLower()) || c.Email!.ToLower().Contains(query.ToLower()));
+        //if (!string.IsNullOrEmpty(query))
+        //    suppliers = suppliers.Where(c =>
+        //        c.Name!.ToLower().Contains(query.ToLower()) || c.Email!.ToLower().Contains(query.ToLower()));
 
         var totalRecords = suppliers.Count();
 
