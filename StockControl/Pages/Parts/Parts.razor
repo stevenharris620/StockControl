@@ -1,0 +1,14 @@
+﻿@page "/parts"
+
+
+<StockPage Title="Parts" BreadcrumbItems="_breadcrumbItems">
+	<PartsList />
+</StockPage>
+
+@code {
+	private List<BreadcrumbItem> _breadcrumbItems = new List<BreadcrumbItem>()
+	{
+		new BreadcrumbItem("Home","/"),
+		new BreadcrumbItem("Parts","/parts",true)
+	};
+}

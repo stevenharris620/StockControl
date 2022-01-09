@@ -27,6 +27,7 @@ builder.Services.AddAuthorizationCore(); // auth attribute
 builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthenticationStateProvider>();
 
 builder.Services.AddScoped<ISupplierService, SuppliersService>(); // TODO move to ext class
+builder.Services.AddScoped<IPartService, PartService>(); // TODO move to ext class
 
 await builder.Build().RunAsync();
 

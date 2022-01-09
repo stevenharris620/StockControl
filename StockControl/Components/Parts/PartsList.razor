@@ -1,0 +1,42 @@
+﻿@using StockControl.Shared.Requests
+@using AKSoftware.Blazor.Utilities
+ @namespace StockControl.Components
+ 
+ <MudIconButton Icon="@Icons.Material.Filled.Add" Color=" Color.Success"  OnClick="AddPart"></MudIconButton>
+ 
+ <div class="mt-4">
+		 <PlayersCardList FetchPlayers="GetPlayersAsync" OnEditClicked="EditPlayer"  OnDeleteClicked="DeletePlayerAsync"/>
+
+	
+ </div>
+
+ @code {
+	 [Inject] public IPartService PartService { get; set; }
+
+	 [Inject] public NavigationManager NavigationManager { get; set; }
+	 [Inject] public IDialogService DialogService { get; set; }
+
+	 [CascadingParameter] public IModalService Modal { get; set; }
+
+	 private string _errorMessage = string.Empty;
+	 private bool _isBusy = false;
+
+	 private int _pageNumber = 1;
+	 private int _pageSize = 10;
+	 private string _query = string.Empty;
+	 private int _totalPages = 1;
+
+	 private List<PartDetail> _parts = new();
+
+	 private async Task AddPlayer()
+	 {
+
+		 var modal = Modal.Show<PartForm>("Create a player");
+		 var result = await modal.Result;
+
+		 Console.WriteLine(result.Cancelled ? "Modal was cancelled" : "Modal was closed");
+
+		 MessagingCenter.Send(this, "part", new PartDetail());
+	 }
+
+ }
