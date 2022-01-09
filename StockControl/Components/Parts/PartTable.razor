@@ -1,0 +1,90 @@
+﻿@using StockControl.Shared.Requests
+@using StockControl.Services
+@using AKSoftware.Blazor.Utilities
+ @namespace StockControl.Components
+ 
+  <MudTable ServerData="@(new Func<TableState, Task<TableData<PartDetail>>>(ServerReloadAsync))"
+		  Dense="true" Hover="true" @ref="_table">
+	<ToolBarContent>
+		<MudText Typo="Typo.h6">Parts</MudText>
+		<MudSpacer />
+		<MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+					  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+	</ToolBarContent>
+	<HeaderContent>
+		@*<MudTh><MudTableSortLabel SortLabel="image_field" T="PartDetail">Image</MudTableSortLabel></MudTh>*@
+		<MudTh><MudTableSortLabel SortLabel="name_field" T="PartDetail">Name</MudTableSortLabel></MudTh>
+@*		<MudTh><MudTableSortLabel SortLabel="contact_field" T="PartDetail">Contact</MudTableSortLabel></MudTh>
+		<MudTh><MudTableSortLabel SortLabel="email_field" T="PartDetail">Email</MudTableSortLabel></MudTh>
+		<MudTh><MudTableSortLabel SortLabel="website_field" T="PartDetail">Website</MudTableSortLabel></MudTh>
+		<MudTh><MudTableSortLabel SortLabel="action_field" T="PartDetail">Actions</MudTableSortLabel></MudTh>*@
+	</HeaderContent>
+	<RowTemplate>
+		@*<MudTd DataLabel="Name">@context.Image</MudTd>*@
+		<MudTd DataLabel="Name">@context.Name</MudTd>
+@*		<MudTd DataLabel="Contact">@context.Contact</MudTd>
+		<MudTd DataLabel="Email">@context.Email</MudTd>
+		<MudTd DataLabel="Website">@context.Website</MudTd>*@
+		<MudTd DataLabel="Actions">
+			<MudIconButton Icon="@Icons.Material.Filled.Preview" Color="Color.Success"
+						   OnClick="async ()=> await OnViewClicked.InvokeAsync(context)" />
+			<MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default"
+						   OnClick="async ()=> await OnEditClicked.InvokeAsync(context)" />
+			<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error"
+						   OnClick="async ()=> await OnDeleteClicked.InvokeAsync(context)" />
+		</MudTd>
+	</RowTemplate>
+	<NoRecordsContent>
+		<MudText>No matching records found</MudText>
+	</NoRecordsContent>
+	<LoadingContent>
+		<MudText>Loading...</MudText>
+	</LoadingContent>
+	<PagerContent>
+		<MudTablePager />
+	</PagerContent>
+</MudTable>
+
+ @code {
+	 [Inject] public HttpClient HttpClient { get; set; }
+	 [Inject] public IPartService PartService { get; set; }
+
+	 [Parameter]
+	 public EventCallback<PartDetail> OnViewClicked { get; set; }
+
+	 [Parameter]
+	 public EventCallback<PartDetail> OnEditClicked { get; set; }
+
+	 [Parameter]
+	 public EventCallback<PartDetail> OnDeleteClicked { get; set; }
+
+	 private string _query = "s";
+	 private MudTable<PartDetail> _table;
+
+	 protected override void OnInitialized()
+	 {
+		 MessagingCenter.Subscribe<PartsList, PartDetail>(this, "part", async (sender, args) =>
+		 {
+			 await _table.ReloadServerData();
+			 StateHasChanged();
+		 });
+	 }
+
+	 private async Task<TableData<PartDetail>> ServerReloadAsync(TableState state)
+	 {
+
+		 var result = await PartService.GetPlayersAsync(_query, state.Page, state.PageSize);
+
+		 return new TableData<PartDetail>
+		 {
+			 Items = result.Value.Records,
+			 TotalItems = result.Value.ItemsCount
+		 };
+	 }
+
+	 private void OnSearch(string? query)
+	 {
+		 _query = query;
+		 _table.ReloadServerData();
+	 }
+}

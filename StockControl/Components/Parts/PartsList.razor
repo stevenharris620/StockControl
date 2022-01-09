@@ -1,12 +1,15 @@
 ﻿@using StockControl.Shared.Requests
 @using AKSoftware.Blazor.Utilities
+@using StockControl.Components.Parts
+@using StockControl.Services
+
  @namespace StockControl.Components
  
  <MudIconButton Icon="@Icons.Material.Filled.Add" Color=" Color.Success"  OnClick="AddPart"></MudIconButton>
  
  <div class="mt-4">
-		 <PlayersCardList FetchPlayers="GetPlayersAsync" OnEditClicked="EditPlayer"  OnDeleteClicked="DeletePlayerAsync"/>
-
+		 @*<PlayersCardList FetchPlayers="GetPlayersAsync" OnEditClicked="EditPlayer"  OnDeleteClicked="DeletePlayerAsync"/>*@
+		 <PartTable OnEditClicked="EditPart" />
 	
  </div>
 
@@ -28,7 +31,7 @@
 
 	 private List<PartDetail> _parts = new();
 
-	 private async Task AddPlayer()
+	 private async Task AddPart()
 	 {
 
 		 var modal = Modal.Show<PartForm>("Create a player");
@@ -37,6 +40,11 @@
 		 Console.WriteLine(result.Cancelled ? "Modal was cancelled" : "Modal was closed");
 
 		 MessagingCenter.Send(this, "part", new PartDetail());
+	 }
+
+	 private async Task EditPart()
+	 {
+
 	 }
 
  }
