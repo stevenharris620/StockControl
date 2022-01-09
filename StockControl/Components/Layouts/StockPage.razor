@@ -1,0 +1,11 @@
+﻿@namespace StockControl.Components
+
+<MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="mt-2">
+	<MudText Typo="Typo.h4">@Title</MudText>
+	<MudBreadcrumbs Items="BreadcrumbItems">
+		<SeparatorTemplate>
+			<MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small"/>
+		</SeparatorTemplate>
+	</MudBreadcrumbs>
+	@ChildContent
+</MudContainer>
