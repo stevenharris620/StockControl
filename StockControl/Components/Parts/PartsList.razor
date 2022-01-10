@@ -39,7 +39,7 @@
 
 		 Console.WriteLine(result.Cancelled ? "Modal was cancelled" : "Modal was closed");
 
-		 MessagingCenter.Send(this, "part", new PartDetail());
+		 MessagingCenter.Send(this, "part_updated", new PartDetail());
 	 }
 
 	 private async Task EditPart(PartDetail part)

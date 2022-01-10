@@ -71,7 +71,7 @@
 			<MudItem xs="12" sm="6" md="3">
 				@*<MudTextField Label="Unit Type"  @bind-Value="@_model.UnitType"  Variant="Variant.Outlined"/>*@
 				<MudSelect Variant="Variant.Outlined"  @bind-Value="_unitType" Placeholder="Select Unit Type" Required
-				           AdornmentIcon="@Icons.Outlined.List" AdornmentColor="Color.Primary">
+				            AdornmentColor="Color.Primary">
 					<MudSelectItem Value="@("Box")" >Box</MudSelectItem>
 					<MudSelectItem Value="@("Length")">Length</MudSelectItem>
 					<MudSelectItem Value="@("Each")">Each</MudSelectItem>
@@ -82,6 +82,17 @@
 			</MudItem>	
 			<MudItem xs="12" sm="12" md="3">
 				<MudTextField Label="Reorder Level"  @bind-Value="@_model.ReorderLevel"  Variant="Variant.Outlined"/>
+			</MudItem>	
+			<MudItem xs="12" sm="12" md="12">
+				<MudSelect T="SupplierDetail"  Variant="Variant.Outlined" @bind-Value="SelectedSupplier" Placeholder="Select Supplier" Required="true"
+				          AdornmentColor="Color.Primary">
+					@foreach (var supplier in _suppliers)
+					{
+						<MudSelectItem Value="@supplier">@supplier.Name</MudSelectItem>
+					}
+		
+
+				</MudSelect>
 			</MudItem>
 		</MudGrid>
 	</MudContainer>
@@ -120,13 +131,13 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		//await GetSuppliersAsync();
+		await GetSuppliersAsync();
 
 		if (_isEditMode) 
 		{
 			await FetchPartByIdAsync();
 			_unitType = _model.UnitType;
-	//SelectedSupplier = _suppliers.FirstOrDefault(x => x.Id == _model.SupplierId);
+	         SelectedSupplier = _suppliers.FirstOrDefault(x => x.Id == _model.SupplierId);
 		}
 	}
 
@@ -181,7 +192,7 @@
 		try
 		{
 			_model.UnitType = _unitType;
-
+			_model.SupplierId = SelectedSupplier.Id;
 			FormFile? formFile = null;
 			if (_stream != null) formFile = new FormFile(_stream, _fileName);
 
