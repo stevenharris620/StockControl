@@ -3,7 +3,7 @@
 public interface IImageService
 {
     byte[] ConvertImageToByteArray(IFormFile image);
-    string ConvertByteArrayToChar64(byte[] array);
+    string? ConvertByteArrayToChar64(byte[] array);
 }
 public class ImageService : IImageService
 {
@@ -14,7 +14,7 @@ public class ImageService : IImageService
         return target.ToArray();
     }
 
-    public string ConvertByteArrayToChar64(byte[] array)
+    public string? ConvertByteArrayToChar64(byte[] array)
     {
         return array == null
             ? ""

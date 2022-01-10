@@ -46,14 +46,12 @@ public class SupplierService : ISupplierService
         {
             await _unitOfWork.Suppliers.CreateAsync(supplier);
             await _unitOfWork.CommitChangesAsync(_identityOptions.UserId);
-            //await _unitOfWork.CommitChangesAsync("8e445865-a24d-4543-a6c6-9443d048cdb9");
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw;
         }
-
 
         return supplier;
     }

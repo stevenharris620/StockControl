@@ -1,5 +1,243 @@
-﻿<h3>PartForm</h3>
+﻿@using StockControl.Services
+@using StockControl.Services.Exceptions
+@using StockControl.Shared.Helpers
+@using StockControl.Shared.Requests
+@using AKSoftware.Blazor.Utilities
+@using StockControl.Shared.Response
+@namespace StockControl.Components
+
+<EditForm Model="_model" OnValidSubmit="SubmitFormAsync" style="width: 800px">
+	
+	@if (!string.IsNullOrWhiteSpace(_errorMessage))
+	{
+		<MudAlert Severity="Severity.Error" Variant="Variant.Filled" Class="my-2">@_errorMessage</MudAlert>
+	}
+	
+	<DataAnnotationsValidator />
+	
+	
+	<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+		<MudGrid>
+			@*		<MudItem xs="12" sm="6" md="4">
+				<MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+			</MudItem>
+			<MudItem xs="12" sm="6" md="4">
+				<MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+			</MudItem>
+			<MudItem xs="12" sm="12" md="4">
+				<MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+			</MudItem>*@
+			<MudItem xs="12" sm="7">
+				<MudGrid>
+					<MudItem xs="12">
+						<MudTextField Label="Name"  @bind-Value="@_model.Name"  Variant="Variant.Outlined"/>
+						<ValidationMessage For="@(() => _model.Name)"/>
+					</MudItem>
+					<MudItem xs="12">
+						<MudTextField Label="Description" Lines="3" @bind-Value="@_model.Description"  Variant="Variant.Outlined"/>
+						<ValidationMessage For="@(() => _model.Description)"/>
+					</MudItem>
+					<MudItem xs="12">
+						<MudTextField Label="PartCode"  @bind-Value="@_model.PartCode"  Variant="Variant.Outlined"/>
+						<ValidationMessage For="@(() => _model.PartCode)"/>
+					</MudItem>
+				</MudGrid>
+			</MudItem>
+			<MudItem xs="12" sm="5">
+				<div class="col-lg-4 personPhoto">
+					@if (string.IsNullOrEmpty(_model.ImageChar64))
+					{
+						<MudCardMedia Image="Default.png" Height="280" />
+					}
+					else
+					{
+						<MudCardMedia Image="@_model.ImageChar64" Height="310" />
+					}
+					<InputFile id="fileInput"  OnChange="OnChooseFileAsync" hidden  />
+					<MudFab HtmlTag="label"   OnChange="OnChooseFileAsync" DisableElevation="true" 
+					        Style="background-color:transparent" Class="hover-item imageButton"
+					        Color=" Color.Secondary"
+					        Icon="@Icons.Outlined.CameraAlt" IconColor="Color.Success"
+					        for="fileInput" />
+					@if(_stream != null)
+					{
+						<MudChip class="imagechip" Color="Color.Success">New Image :- @_fileName</MudChip>
+					}
+				</div>
+			</MudItem>
+			<MudItem xs="12" sm="6" md="4">
+				<MudTextField Label="Cost"  @bind-Value="@_model.Cost"  Variant="Variant.Outlined"/>
+			</MudItem>
+			<MudItem xs="12" sm="6" md="4">
+				<MudTextField Label="Unit Type"  @bind-Value="@_model.UnitType"  Variant="Variant.Outlined"/>
+			</MudItem>
+			<MudItem xs="12" sm="12" md="4">
+				<MudTextField Label="Stock Level"  @bind-Value="@_model.StockLevel"  Variant="Variant.Outlined"/>
+			</MudItem>	
+			<MudItem xs="12" sm="12" md="4">
+				<MudTextField Label="Reorder Level"  @bind-Value="@_model.ReorderLevel"  Variant="Variant.Outlined"/>
+			</MudItem>
+		</MudGrid>
+	</MudContainer>
+	
+	<MudDivider DividerType="DividerType.FullWidth" Class="mt-3" />
+
+	<MudButton Color="Color.Primary" Variant="Variant.Filled"
+	           ButtonType="ButtonType.Submit" FullWidth="true" Disabled="_isBusy">Save</MudButton>
+
+</EditForm>
 
 @code {
 
+	[Inject] public IPartService PartService { get; set; }
+	[Inject] public ISupplierService SupplierService { get; set; }
+
+	[Inject] public NavigationManager NavigationManager { get; set; }
+
+	[CascadingParameter] private BlazoredModalInstance ModalInstance { get; set; }
+
+
+	public SupplierDetail SelectedSupplier { get; set; }
+	private List<SupplierDetail> _suppliers = new();
+
+	[Parameter] public string Id { get; set; }
+	private bool _isEditMode => Id != null;
+
+	private PartDetail _model = new(){SupplierId = "556108f3-d3bf-4a63-ac4b-abba6be9acc1"};
+	private Stream? _stream = null;
+
+	private string _errorMessage = string.Empty;
+	private string _fileName = string.Empty;
+	private bool _isBusy = false;
+	private int _pageNumber = 1;
+	private int _pageSize = 100;
+	private int _totalPages = 1;
+	private string _query = string.Empty;
+
+	protected override async Task OnInitializedAsync()
+	{
+		//await GetSuppliersAsync();
+
+		//if (_isEditMode) 
+		//{
+		//	await FetchPartByIdAsync();
+		//	SelectedSupplier = _suppliers.FirstOrDefault(x => x.Id == _model.SupplierId);
+		//}
+	}
+
+	private async Task FetchPartByIdAsync()
+	{
+		_isBusy = true;
+
+		try
+		{
+			var result = await PartService.GetByIdAsync(Id);
+			_model = result.Value;
+		}
+		catch (Exception ex)
+		{
+			_errorMessage = ex.Message;
+		}
+
+
+		_isBusy = false;
+	}
+
+	private async Task<PagedList<SupplierDetail>> GetSuppliersAsync(string query = "a", int pageNumber = 1,
+		int pageSize = 100)
+	{
+		_isBusy = true;
+
+		try
+		{
+			var result = await SupplierService.GetSuppliersAsync(query, pageNumber, pageSize);
+			_suppliers = result.Value.Records.ToList();
+			_pageNumber = result.Value.Page;
+			_pageSize = result.Value.PageSize;
+			_totalPages = result.Value.TotalPages;
+			_isBusy = false;
+			return result.Value;
+		}
+		catch (ApiException ex)
+		{
+			_errorMessage = ex.ApiErrorResponse.Message;
+		}
+		catch (Exception ex)
+		{
+			_errorMessage = ex.Message;
+		}
+
+		_isBusy = false;
+		return null;
+	}
+
+	private async Task SubmitFormAsync()
+	{
+		//throw new Exception("TEST");
+		_isBusy = true;
+
+		try
+		{
+			FormFile formFile = null!;
+			if (_stream != null) formFile = new FormFile(_stream, _fileName);
+
+			if (_isEditMode)
+			{
+				await PartService.EditAsync(_model, formFile);
+			}
+			else
+			{
+				//throw new Exception("TEST");
+				var result = await PartService.CreateAsync(_model, formFile);
+			}
+
+			await ModalInstance.CloseAsync(ModalResult.Ok(_model));
+			MessagingCenter.Send(this, "part", _model);
+
+		}
+		catch (ApiException ex)
+		{
+			_errorMessage = ex.ApiErrorResponse.Message;
+		}
+		catch (Exception ex)
+		{
+			_errorMessage = ex.Message;
+		}
+
+
+		_isBusy = false;
+	}
+
+	private async Task OnChooseFileAsync(InputFileChangeEventArgs e)
+	{
+		_errorMessage = string.Empty;
+		var file = e.File;
+		if (file != null)
+		{
+			if (file.Size > 2097152)
+			{
+				_errorMessage = "The file must be less then 2MB";
+				return;
+			}
+
+			string[] allowedExtensions = { ".jpg", ".bmp", ".png", ".svg" };
+
+			var extension = Path.GetExtension(file.Name).ToLower();
+
+			if (!allowedExtensions.Contains(extension))
+			{
+				_errorMessage = "Please Choose a valid file [.jpg | .bmp | .png | .svg]";
+				return;
+			}
+
+			using (var stream = file.OpenReadStream(2097152))
+			{
+				var buffer = new byte[file.Size];
+				await stream.ReadAsync(buffer, 0, (int)file.Size);
+				_stream = new MemoryStream(buffer);
+				_stream.Position = 0;
+				_fileName = file.Name;
+			}
+		}
+	}
 }

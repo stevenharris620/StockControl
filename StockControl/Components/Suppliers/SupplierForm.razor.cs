@@ -5,13 +5,12 @@ using Microsoft.AspNetCore.Components;
 using StockControl.Services;
 using StockControl.Services.Exceptions;
 using StockControl.Shared.Requests;
-using System.Net.Http.Json;
 
 namespace StockControl.Components
 {
     public partial class SupplierForm
     {
-        [Inject] public HttpClient HttpClient { get; set; }
+        //[Inject] public HttpClient HttpClient { get; set; }
         [Inject] public ISupplierService SupplierService { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
         [CascadingParameter] private BlazoredModalInstance ModalInstance { get; set; }
@@ -49,9 +48,9 @@ namespace StockControl.Components
                 else
                 {
                     _model.Id = String.Empty;
-                    var response = await HttpClient.PostAsJsonAsync("api/Supplier", _model);
+                    // var response = await HttpClient.PostAsJsonAsync("api/Supplier", _model);
                     //_model.Id = String.Empty;
-                    //var result = await SupplierService.CreateAsync(_model);
+                    var result = await SupplierService.CreateAsync(_model);
                 }
 
                 await ModalInstance.CloseAsync(ModalResult.Ok(_model));

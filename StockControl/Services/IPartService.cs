@@ -56,10 +56,29 @@ namespace StockControl.Services
             throw new NotImplementedException();
         }
 
-        public Task<ApiResponse<PartDetail>> CreateAsync(PartDetail playerDetail, FormFile image)
+        public async Task<ApiResponse<PartDetail>> CreateAsync(PartDetail playerDetail, FormFile image)
         {
-            throw new NotImplementedException();
+            //throw new Exception("TESTyo");
+            var form = PrepareClubForm(playerDetail, image, false);
+
+            var response = await _httpClient.PostAsync("api/part", form);
+            return await GetResponse(response);
         }
+
+        private async Task<ApiResponse<PartDetail>> GetResponse(HttpResponseMessage response)
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<ApiResponse<PartDetail>>();
+                return result;
+            }
+            else
+            {
+                var errorResponse = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+                throw new ApiException(errorResponse, response.StatusCode);
+            }
+        }
+
 
         public Task<ApiResponse<PartDetail>> EditAsync(PartDetail playerDetail, FormFile image)
         {
@@ -69,6 +88,53 @@ namespace StockControl.Services
         public Task<ApiResponse<PartDetail>> DeleteAsync(string id)
         {
             throw new NotImplementedException();
+        }
+
+        private HttpContent PrepareClubForm(PartDetail model, FormFile imageFile, bool isUpdate)
+        {
+            var form = new MultipartFormDataContent();
+
+            form.Add(new StringContent(model.Name), nameof(PartDetail.Name));
+
+
+            if (isUpdate)
+            {
+                form.Add(new StringContent(model.Id), nameof(PartDetail.Id));
+            }
+            else
+            {
+                model.Id = "";
+                form.Add(new StringContent(model.Id), nameof(PartDetail.Id));
+            }
+
+            if (!string.IsNullOrEmpty(model.PartCode))
+                form.Add(new StringContent(model.PartCode), nameof(PartDetail.PartCode));
+
+            if (!string.IsNullOrEmpty(model.Description))
+                form.Add(new StringContent(model.Description), nameof(PartDetail.Description));
+
+
+
+            form.Add(new StringContent(model.Cost.ToString()), nameof(PartDetail.Cost));
+            if (!string.IsNullOrEmpty(model.UnitType))
+                form.Add(new StringContent(model.UnitType.ToString()), nameof(PartDetail.UnitType));
+            form.Add(new StringContent(model.StockLevel.ToString()), nameof(PartDetail.StockLevel));
+            form.Add(new StringContent(model.ReorderLevel.ToString()), nameof(PartDetail.ReorderLevel));
+
+
+
+            if (!string.IsNullOrEmpty(model.SupplierId))
+                form.Add(new StringContent(model.SupplierId), nameof(PartDetail.SupplierId));
+
+            if (!string.IsNullOrWhiteSpace(model.ImageChar64))
+                form.Add(new StringContent(model.ImageChar64), nameof(PartDetail.ImageChar64));
+
+            if (imageFile != null)
+                form.Add(new StreamContent(imageFile.FileStream), nameof(model.Image), imageFile.FileName);
+
+
+            return form;
+
         }
     }
 }

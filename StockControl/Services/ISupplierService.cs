@@ -1,7 +1,6 @@
 ﻿using StockControl.Services.Exceptions;
 using StockControl.Shared.Requests;
 using StockControl.Shared.Response;
-using System.Diagnostics;
 using System.Net.Http.Json;
 
 
@@ -27,12 +26,10 @@ public class SuppliersService : ISupplierService
 
     public async Task<ApiResponse<SupplierDetail>> CreateAsync(SupplierDetail supplierDetail)
     {
-
-
         try
         {
             var response = await _httpClient.PostAsJsonAsync("api/Supplier", supplierDetail);
-            throw new Exception("TEST1");
+            //throw new Exception("TEST1");
             return await GetResponse(response);
         }
         catch (Exception e)
@@ -52,8 +49,8 @@ public class SuppliersService : ISupplierService
 
     public async Task<ApiResponse<SupplierDetail>> EditAsync(SupplierDetail supplierDetail)
     {
-        Debug.Write("------------->" + supplierDetail.Name);
-        var response = await _httpClient.PutAsJsonAsync("/api/supplier", supplierDetail);
+        // throw new Exception("TESTy1");
+        var response = await _httpClient.PutAsJsonAsync("api/supplier", supplierDetail);
         return await GetResponse(response);
     }
 

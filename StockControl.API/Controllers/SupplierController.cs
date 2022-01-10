@@ -56,7 +56,7 @@ namespace StockControl.API.Controllers
         [HttpPut]
         [ProducesResponseType(200, Type = typeof(ApiResponse<SupplierDetail>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
-        public async Task<IActionResult> Update([FromForm] SupplierDetail model)
+        public async Task<IActionResult> Update(SupplierDetail model)
         {
             var supplier = await _supplierService.UpdateAsync(model);
 
