@@ -27,7 +27,7 @@
 			<MudItem xs="12" sm="12" md="4">
 				<MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
 			</MudItem>*@
-			<MudItem xs="12" sm="7">
+			<MudItem xs="12" sm="12">
 				<MudGrid>
 					<MudItem xs="12">
 						<MudTextField Label="Name"  @bind-Value="@_model.Name"  Variant="Variant.Outlined"/>
@@ -43,7 +43,7 @@
 					</MudItem>
 				</MudGrid>
 			</MudItem>
-			<MudItem xs="12" sm="5">
+	@*		<MudItem xs="12" sm="5">
 				<div class="col-lg-4 personPhoto">
 					@if (string.IsNullOrEmpty(_model.ImageChar64))
 					{
@@ -64,17 +64,17 @@
 						<MudChip class="imagechip" Color="Color.Success">New Image :- @_fileName</MudChip>
 					}
 				</div>
-			</MudItem>
-			<MudItem xs="12" sm="6" md="4">
+			</MudItem>*@
+			<MudItem xs="12" sm="6" md="3">
 				<MudTextField Label="Cost"  @bind-Value="@_model.Cost"  Variant="Variant.Outlined"/>
 			</MudItem>
-			<MudItem xs="12" sm="6" md="4">
+			<MudItem xs="12" sm="6" md="3">
 				<MudTextField Label="Unit Type"  @bind-Value="@_model.UnitType"  Variant="Variant.Outlined"/>
 			</MudItem>
-			<MudItem xs="12" sm="12" md="4">
+			<MudItem xs="12" sm="12" md="3">
 				<MudTextField Label="Stock Level"  @bind-Value="@_model.StockLevel"  Variant="Variant.Outlined"/>
 			</MudItem>	
-			<MudItem xs="12" sm="12" md="4">
+			<MudItem xs="12" sm="12" md="3">
 				<MudTextField Label="Reorder Level"  @bind-Value="@_model.ReorderLevel"  Variant="Variant.Outlined"/>
 			</MudItem>
 		</MudGrid>
@@ -109,20 +109,17 @@
 	private string _errorMessage = string.Empty;
 	private string _fileName = string.Empty;
 	private bool _isBusy = false;
-	private int _pageNumber = 1;
-	private int _pageSize = 100;
-	private int _totalPages = 1;
-	private string _query = string.Empty;
+
 
 	protected override async Task OnInitializedAsync()
 	{
 		//await GetSuppliersAsync();
 
-		//if (_isEditMode) 
-		//{
-		//	await FetchPartByIdAsync();
-		//	SelectedSupplier = _suppliers.FirstOrDefault(x => x.Id == _model.SupplierId);
-		//}
+		if (_isEditMode) 
+		{
+			await FetchPartByIdAsync();
+			//SelectedSupplier = _suppliers.FirstOrDefault(x => x.Id == _model.SupplierId);
+		}
 	}
 
 	private async Task FetchPartByIdAsync()
@@ -152,9 +149,7 @@
 		{
 			var result = await SupplierService.GetSuppliersAsync(query, pageNumber, pageSize);
 			_suppliers = result.Value.Records.ToList();
-			_pageNumber = result.Value.Page;
-			_pageSize = result.Value.PageSize;
-			_totalPages = result.Value.TotalPages;
+
 			_isBusy = false;
 			return result.Value;
 		}
@@ -173,7 +168,6 @@
 
 	private async Task SubmitFormAsync()
 	{
-		//throw new Exception("TEST");
 		_isBusy = true;
 
 		try
@@ -187,13 +181,11 @@
 			}
 			else
 			{
-
-				//throw new Exception("TEST");
 				var result = await PartService.CreateAsync(_model, formFile);
 			}
 
 			await ModalInstance.CloseAsync(ModalResult.Ok(_model));
-			MessagingCenter.Send(this, "part", _model);
+			MessagingCenter.Send(this, "part_updated", _model);
 
 		}
 		catch (ApiException ex)

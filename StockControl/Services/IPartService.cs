@@ -8,7 +8,7 @@ namespace StockControl.Services
 {
     public interface IPartService
     {
-        Task<ApiResponse<PagedList<PartDetail>>> GetPlayersAsync(string query = null, int pageNumber = 1, int pageSize = 10);
+        Task<ApiResponse<PagedList<PartDetail>>> GetPartsAsync(string query = null, int pageNumber = 1, int pageSize = 10);
         Task<ApiResponse<PartDetail>> GetByIdAsync(string id);
         Task<ApiResponse<PartDetail>> CreateAsync(PartDetail playerDetail, FormFile? image);
         Task<ApiResponse<PartDetail>> EditAsync(PartDetail playerDetail, FormFile? image);
@@ -23,7 +23,7 @@ namespace StockControl.Services
             _httpClient = httpClient;
         }
 
-        public async Task<ApiResponse<PagedList<PartDetail>>> GetPlayersAsync(string query, int pageNumber = 1, int pageSize = 10)
+        public async Task<ApiResponse<PagedList<PartDetail>>> GetPartsAsync(string query, int pageNumber = 1, int pageSize = 10)
         {
             try
             {
@@ -51,17 +51,18 @@ namespace StockControl.Services
             }
         }
 
-        public Task<ApiResponse<PartDetail>> GetByIdAsync(string id)
+        public async Task<ApiResponse<PartDetail>> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync($"/api/part/{id}");
+            return await GetResponse(response);
         }
 
-        public async Task<ApiResponse<PartDetail>> CreateAsync(PartDetail playerDetail, FormFile? image)
+        public async Task<ApiResponse<PartDetail>> CreateAsync(PartDetail partDetail, FormFile? image)
         {
 
-            var form = PrepareClubForm(playerDetail, image, false);
+            //  var form = PrepareClubForm(playerDetail, image, false);
 
-            var response = await _httpClient.PostAsync("api/part", form);
+            var response = await _httpClient.PostAsJsonAsync("api/Part", partDetail);
             return await GetResponse(response);
 
 
@@ -82,9 +83,10 @@ namespace StockControl.Services
         }
 
 
-        public Task<ApiResponse<PartDetail>> EditAsync(PartDetail playerDetail, FormFile? image)
+        public async Task<ApiResponse<PartDetail>> EditAsync(PartDetail playerDetail, FormFile? imagel)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PutAsJsonAsync("api/part", playerDetail);
+            return await GetResponse(response);
         }
 
         public Task<ApiResponse<PartDetail>> DeleteAsync(string id)
@@ -111,6 +113,11 @@ namespace StockControl.Services
 
             if (!string.IsNullOrEmpty(model.PartCode))
                 form.Add(new StringContent(model.PartCode), nameof(PartDetail.PartCode));
+            else
+            {
+                model.PartCode = " ";
+                form.Add(new StringContent(model.PartCode), nameof(PartDetail.PartCode));
+            }
 
             if (!string.IsNullOrEmpty(model.Description))
                 form.Add(new StringContent(model.Description), nameof(PartDetail.Description));
@@ -128,11 +135,11 @@ namespace StockControl.Services
             if (!string.IsNullOrEmpty(model.SupplierId))
                 form.Add(new StringContent(model.SupplierId), nameof(PartDetail.SupplierId));
 
-            if (!string.IsNullOrWhiteSpace(model.ImageChar64))
-                form.Add(new StringContent(model.ImageChar64), nameof(PartDetail.ImageChar64));
+            //if (!string.IsNullOrWhiteSpace(model.ImageChar64))
+            //    form.Add(new StringContent(model.ImageChar64), nameof(PartDetail.ImageChar64));
 
-            if (imageFile != null)
-                form.Add(new StreamContent(imageFile.FileStream), nameof(model.Image), imageFile.FileName);
+            //if (imageFile != null)
+            //    form.Add(new StreamContent(imageFile.FileStream), nameof(model.Image), imageFile.FileName);
 
 
             return form;

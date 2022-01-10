@@ -35,7 +35,7 @@ namespace StockControl.API.Controllers
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(ApiResponse<PartDetail>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
-        public async Task<IActionResult> Create([FromForm] PartDetail model)
+        public async Task<IActionResult> Create(PartDetail model)
         {
             var part = await _partService.CreateAsync(model);
 
@@ -56,7 +56,7 @@ namespace StockControl.API.Controllers
         [HttpPut]
         [ProducesResponseType(200, Type = typeof(ApiResponse<PartDetail>))]
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
-        public async Task<IActionResult> Update([FromForm] PartDetail model)
+        public async Task<IActionResult> Update(PartDetail model)
         {
             var part = await _partService.UpdateAsync(model);
 

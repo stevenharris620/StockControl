@@ -34,15 +34,15 @@ namespace StockControl.Components
             MessagingCenter.Send(this, "supplier_updated", new SupplierDetail());
         }
 
-        private async Task EditSupplier(SupplierDetail zone)
+        private async Task EditSupplier(SupplierDetail supplier)
         {
             var parameters = new ModalParameters();
-            parameters.Add(nameof(zone.Id), zone.Id);
+            parameters.Add(nameof(supplier.Id), supplier.Id);
             var modal = Modal.Show<SupplierForm>("Edit a supplier", parameters);
             var result = await modal.Result;
 
             Console.WriteLine(result.Cancelled ? "Modal was cancelled" : "Modal was closed");
-            MessagingCenter.Send(this, "supplier_updated", zone);
+            MessagingCenter.Send(this, "supplier_updated", supplier);
         }
 
         private async void DeleteSupplierAsync(SupplierDetail zone)

@@ -8,23 +8,23 @@
 	<ToolBarContent>
 		<MudText Typo="Typo.h6">Parts</MudText>
 		<MudSpacer />
-		<MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
-					  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+@*		<MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+					  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>*@
 	</ToolBarContent>
 	<HeaderContent>
 		@*<MudTh><MudTableSortLabel SortLabel="image_field" T="PartDetail">Image</MudTableSortLabel></MudTh>*@
 		<MudTh><MudTableSortLabel SortLabel="name_field" T="PartDetail">Name</MudTableSortLabel></MudTh>
-@*		<MudTh><MudTableSortLabel SortLabel="contact_field" T="PartDetail">Contact</MudTableSortLabel></MudTh>
-		<MudTh><MudTableSortLabel SortLabel="email_field" T="PartDetail">Email</MudTableSortLabel></MudTh>
-		<MudTh><MudTableSortLabel SortLabel="website_field" T="PartDetail">Website</MudTableSortLabel></MudTh>
-		<MudTh><MudTableSortLabel SortLabel="action_field" T="PartDetail">Actions</MudTableSortLabel></MudTh>*@
+		<MudTh><MudTableSortLabel SortLabel="partcode_field" T="PartDetail">Part Code</MudTableSortLabel></MudTh>
+		<MudTh><MudTableSortLabel SortLabel="cost_field" T="PartDetail">Cost</MudTableSortLabel></MudTh>
+		<MudTh><MudTableSortLabel SortLabel="stocklevel_field" T="PartDetail">Stock Level</MudTableSortLabel></MudTh>
+		<MudTh><MudTableSortLabel SortLabel="action_field" T="PartDetail">Actions</MudTableSortLabel></MudTh>
 	</HeaderContent>
 	<RowTemplate>
 		@*<MudTd DataLabel="Name">@context.Image</MudTd>*@
 		<MudTd DataLabel="Name">@context.Name</MudTd>
-@*		<MudTd DataLabel="Contact">@context.Contact</MudTd>
-		<MudTd DataLabel="Email">@context.Email</MudTd>
-		<MudTd DataLabel="Website">@context.Website</MudTd>*@
+		<MudTd DataLabel="PartCode">@context.PartCode</MudTd>
+		<MudTd DataLabel="Cost">@context.Cost</MudTd>
+		<MudTd DataLabel="Stock Level">@context.StockLevel</MudTd>
 		<MudTd DataLabel="Actions">
 @*			<MudIconButton Icon="@Icons.Material.Filled.Preview" Color="Color.Success"
 						   OnClick="async ()=> await OnViewClicked.InvokeAsync(context)" />*@
@@ -63,7 +63,7 @@
 
 	 protected override void OnInitialized()
 	 {
-		 MessagingCenter.Subscribe<PartsList, PartDetail>(this, "part", async (sender, args) =>
+		 MessagingCenter.Subscribe<PartsList, PartDetail>(this, "part_updated", async (sender, args) =>
 		 {
 			 await _table.ReloadServerData();
 			 StateHasChanged();
@@ -73,7 +73,7 @@
 	 private async Task<TableData<PartDetail>> ServerReloadAsync(TableState state)
 	 {
 
-		 var result = await PartService.GetPlayersAsync(_query, state.Page, state.PageSize);
+		 var result = await PartService.GetPartsAsync(_query, state.Page, state.PageSize);
 
 		 return new TableData<PartDetail>
 		 {

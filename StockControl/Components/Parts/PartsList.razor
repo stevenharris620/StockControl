@@ -8,7 +8,7 @@
  <MudIconButton Icon="@Icons.Material.Filled.Add" Color=" Color.Success"  OnClick="AddPart"></MudIconButton>
  
  <div class="mt-4">
-		 @*<PlayersCardList FetchPlayers="GetPlayersAsync" OnEditClicked="EditPlayer"  OnDeleteClicked="DeletePlayerAsync"/>*@
+		 @*<PlayersCardList FetchPlayers="GetPartsAsync" OnEditClicked="EditPlayer"  OnDeleteClicked="DeletePlayerAsync"/>*@
 		 <PartTable OnEditClicked="EditPart" />
 	
  </div>
@@ -42,9 +42,15 @@
 		 MessagingCenter.Send(this, "part", new PartDetail());
 	 }
 
-	 private async Task EditPart()
+	 private async Task EditPart(PartDetail part)
 	 {
+		 var parameters = new ModalParameters();
+		 parameters.Add(nameof(part.Id), part.Id);
+		 var modal = Modal.Show<PartForm>("Edit a part", parameters);
+		 var result = await modal.Result;
 
+		 Console.WriteLine(result.Cancelled ? "Modal was cancelled" : "Modal was closed");
+		 MessagingCenter.Send(this, "part_updated", part);
 	 }
 
  }
