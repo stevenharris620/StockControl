@@ -178,7 +178,7 @@
 
 		try
 		{
-			FormFile formFile = null!;
+			FormFile? formFile = null;
 			if (_stream != null) formFile = new FormFile(_stream, _fileName);
 
 			if (_isEditMode)
@@ -187,6 +187,7 @@
 			}
 			else
 			{
+
 				//throw new Exception("TEST");
 				var result = await PartService.CreateAsync(_model, formFile);
 			}

@@ -10,8 +10,8 @@ namespace StockControl.Services
     {
         Task<ApiResponse<PagedList<PartDetail>>> GetPlayersAsync(string query = null, int pageNumber = 1, int pageSize = 10);
         Task<ApiResponse<PartDetail>> GetByIdAsync(string id);
-        Task<ApiResponse<PartDetail>> CreateAsync(PartDetail playerDetail, FormFile image);
-        Task<ApiResponse<PartDetail>> EditAsync(PartDetail playerDetail, FormFile image);
+        Task<ApiResponse<PartDetail>> CreateAsync(PartDetail playerDetail, FormFile? image);
+        Task<ApiResponse<PartDetail>> EditAsync(PartDetail playerDetail, FormFile? image);
         Task<ApiResponse<PartDetail>> DeleteAsync(string id);
     }
     public class PartService : IPartService
@@ -56,13 +56,15 @@ namespace StockControl.Services
             throw new NotImplementedException();
         }
 
-        public async Task<ApiResponse<PartDetail>> CreateAsync(PartDetail playerDetail, FormFile image)
+        public async Task<ApiResponse<PartDetail>> CreateAsync(PartDetail playerDetail, FormFile? image)
         {
-            //throw new Exception("TESTyo");
+
             var form = PrepareClubForm(playerDetail, image, false);
 
             var response = await _httpClient.PostAsync("api/part", form);
             return await GetResponse(response);
+
+
         }
 
         private async Task<ApiResponse<PartDetail>> GetResponse(HttpResponseMessage response)
@@ -80,7 +82,7 @@ namespace StockControl.Services
         }
 
 
-        public Task<ApiResponse<PartDetail>> EditAsync(PartDetail playerDetail, FormFile image)
+        public Task<ApiResponse<PartDetail>> EditAsync(PartDetail playerDetail, FormFile? image)
         {
             throw new NotImplementedException();
         }
@@ -90,7 +92,7 @@ namespace StockControl.Services
             throw new NotImplementedException();
         }
 
-        private HttpContent PrepareClubForm(PartDetail model, FormFile imageFile, bool isUpdate)
+        private HttpContent PrepareClubForm(PartDetail model, FormFile? imageFile, bool isUpdate)
         {
             var form = new MultipartFormDataContent();
 

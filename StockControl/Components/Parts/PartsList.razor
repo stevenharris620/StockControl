@@ -34,7 +34,7 @@
 	 private async Task AddPart()
 	 {
 
-		 var modal = Modal.Show<PartForm>("Create a player");
+		 var modal = Modal.Show<PartForm>("Create a part");
 		 var result = await modal.Result;
 
 		 Console.WriteLine(result.Cancelled ? "Modal was cancelled" : "Modal was closed");
