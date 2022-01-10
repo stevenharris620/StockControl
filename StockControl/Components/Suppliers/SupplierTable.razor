@@ -4,10 +4,10 @@
  <MudTable ServerData="@(new Func<TableState, Task<TableData<SupplierDetail>>>(ServerReloadAsync))"
 		  Dense="true" Hover="true" @ref="_table">
 	<ToolBarContent>
-		<MudText Typo="Typo.h6">Zones</MudText>
+		<MudText Typo="Typo.h6">Stock</MudText>
 		<MudSpacer />
-		<MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
-					  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+	@*	<MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+					  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>*@
 	</ToolBarContent>
 	<HeaderContent>
 		@*<MudTh><MudTableSortLabel SortLabel="image_field" T="SupplierDetail">Image</MudTableSortLabel></MudTh>*@
