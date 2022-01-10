@@ -69,7 +69,13 @@
 				<MudTextField Label="Cost"  @bind-Value="@_model.Cost"  Variant="Variant.Outlined"/>
 			</MudItem>
 			<MudItem xs="12" sm="6" md="3">
-				<MudTextField Label="Unit Type"  @bind-Value="@_model.UnitType"  Variant="Variant.Outlined"/>
+				@*<MudTextField Label="Unit Type"  @bind-Value="@_model.UnitType"  Variant="Variant.Outlined"/>*@
+				<MudSelect Variant="Variant.Outlined"  @bind-Value="_unitType" Placeholder="Select Unit Type" Required
+				           AdornmentIcon="@Icons.Outlined.List" AdornmentColor="Color.Primary">
+					<MudSelectItem Value="@("Box")" >Box</MudSelectItem>
+					<MudSelectItem Value="@("Length")">Length</MudSelectItem>
+					<MudSelectItem Value="@("Each")">Each</MudSelectItem>
+				</MudSelect>
 			</MudItem>
 			<MudItem xs="12" sm="12" md="3">
 				<MudTextField Label="Stock Level"  @bind-Value="@_model.StockLevel"  Variant="Variant.Outlined"/>
@@ -109,6 +115,7 @@
 	private string _errorMessage = string.Empty;
 	private string _fileName = string.Empty;
 	private bool _isBusy = false;
+	private string _unitType { get; set; }
 
 
 	protected override async Task OnInitializedAsync()
@@ -118,7 +125,8 @@
 		if (_isEditMode) 
 		{
 			await FetchPartByIdAsync();
-			//SelectedSupplier = _suppliers.FirstOrDefault(x => x.Id == _model.SupplierId);
+			_unitType = _model.UnitType;
+	//SelectedSupplier = _suppliers.FirstOrDefault(x => x.Id == _model.SupplierId);
 		}
 	}
 
@@ -172,6 +180,8 @@
 
 		try
 		{
+			_model.UnitType = _unitType;
+
 			FormFile? formFile = null;
 			if (_stream != null) formFile = new FormFile(_stream, _fileName);
 
