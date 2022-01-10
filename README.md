@@ -2,7 +2,7 @@ Stock Control
 
 An application where users can create a list of suppliers with their respective parts
 
-The project consists of a backend API with  a blazor front end
+The project consists of a backend API with a blazor front end and a shared project library
 
 Front End
 
@@ -13,3 +13,11 @@ The front end also uses a blazor component library called MudBlazor https://mudb
 Back End
 
 The backend is a c# .net6 rest api, the backend uses JWT authentication with Microsoft Identity providing the datastore. The databases were created using the entity framework code first approach.
+
+Shared Library
+
+This library contains the resources shared between the front and back ends eg DTO's and the API request and response objects
+
+Future Work
+
+Work on the front end is still ongoing and the project should be containerised
