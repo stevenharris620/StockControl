@@ -10,6 +10,7 @@ namespace StockControl.Shared.Requests
             PartCode = String.Empty;
             Description = String.Empty;
             UnitType = String.Empty;
+            ImageChar64 = String.Empty;
         }
         public string Id { get; set; }
         [Required] public string? Name { get; set; }
@@ -25,6 +26,6 @@ namespace StockControl.Shared.Requests
         public string SupplierId { get; set; }
 
         // Cosmetic
-        //public string? ImageChar64 { get; set; }
+        public string ImageChar64 { get; set; }
     }
 }

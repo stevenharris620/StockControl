@@ -62,3 +62,40 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.personPhoto > img {
+    display:inline-block;
+    position:relative;
+    object-fit: cover;
+    width: 100%;
+    border: 1px solid black;
+    max-height: 300px;
+    max-width:250px;
+    margin-top:5px;
+}
+
+.imageButton {
+    position: absolute;
+    top: 30px;
+    left:1.25em;
+}
+
+.imagechip {
+    position: absolute;
+    margin: auto;
+    bottom: 1.25em;
+    left:1.25em;
+}
+
+.hover-item{
+    width:48px;
+    height:48px;
+}
+
+.hover-item:hover {
+    
+    width:48px;
+    height:48px;
+    background-color: whitesmoke  !important;
+
+}
