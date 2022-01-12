@@ -18,7 +18,7 @@
 	
 	<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
 		<MudGrid>
-			@*		<MudItem xs="12" sm="6" md="4">
+	@*				<MudItem xs="12" sm="6" md="4">
 				<MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
 			</MudItem>
 			<MudItem xs="12" sm="6" md="4">
@@ -27,44 +27,46 @@
 			<MudItem xs="12" sm="12" md="4">
 				<MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
 			</MudItem>*@
-			<MudItem xs="12" sm="12">
+			<MudItem xs="12" sm="7">
 				<MudGrid>
 					<MudItem xs="12">
 						<MudTextField Label="Name"  @bind-Value="@_model.Name"  Variant="Variant.Outlined"/>
 						<ValidationMessage For="@(() => _model.Name)"/>
 					</MudItem>
 					<MudItem xs="12">
-						<MudTextField Label="Description" Lines="3" @bind-Value="@_model.Description"  Variant="Variant.Outlined"/>
+						<MudTextField Label="Description" Lines="4" @bind-Value="@_model.Description"  Variant="Variant.Outlined"/>
 						<ValidationMessage For="@(() => _model.Description)"/>
 					</MudItem>
-					<MudItem xs="12">
-						<MudTextField Label="PartCode"  @bind-Value="@_model.PartCode"  Variant="Variant.Outlined"/>
-						<ValidationMessage For="@(() => _model.PartCode)"/>
-					</MudItem>
+
 				</MudGrid>
 			</MudItem>
-	@*		<MudItem xs="12" sm="5">
-				<div class="col-lg-4 personPhoto">
-					@if (string.IsNullOrEmpty(_model.ImageChar64))
+	<MudItem xs="12" sm="5" Class="personPhoto">
+@*		<div class="personPhoto" style="background-color: aquamarine">*@
+			<MudCardMedia Image="Default.png" Height="213" />
+			@*	@if (string.IsNullOrEmpty(_model.ImageChar64))
 					{
 						<MudCardMedia Image="Default.png" Height="280" />
 					}
 					else
 					{
 						<MudCardMedia Image="@_model.ImageChar64" Height="310" />
-					}
-					<InputFile id="fileInput"  OnChange="OnChooseFileAsync" hidden  />
-					<MudFab HtmlTag="label"   OnChange="OnChooseFileAsync" DisableElevation="true" 
-					        Style="background-color:transparent" Class="hover-item imageButton"
-					        Color=" Color.Secondary"
-					        Icon="@Icons.Outlined.CameraAlt" IconColor="Color.Success"
-					        for="fileInput" />
-					@if(_stream != null)
-					{
-						<MudChip class="imagechip" Color="Color.Success">New Image :- @_fileName</MudChip>
-					}
-				</div>
-			</MudItem>*@
+					}*@
+			<InputFile id="fileInput" OnChange="OnChooseFileAsync" hidden/>
+			<MudFab HtmlTag="label" OnChange="OnChooseFileAsync" DisableElevation="true" 
+			        Style="background-color: transparent; height: 10px" Class="hover-item imageButton"
+			        Color="Color.Secondary"
+			        Icon="@Icons.Outlined.CameraAlt" IconColor="Color.Success"
+			        for="fileInput"/>
+			@if (_stream != null)
+			{
+				<MudChip class="imagechip" Color="Color.Success">New Image :- @_fileName</MudChip>
+			}
+	@*	</div>*@
+	</MudItem>
+	<MudItem xs="12" sm="12" md="12">
+		<MudTextField Label="PartCode"  @bind-Value="@_model.PartCode"  Variant="Variant.Outlined"/>
+		<ValidationMessage For="@(() => _model.PartCode)"/>
+	</MudItem>
 			<MudItem xs="12" sm="6" md="3">
 				<MudTextField Label="Cost"  @bind-Value="@_model.Cost"  Variant="Variant.Outlined"/>
 			</MudItem>
