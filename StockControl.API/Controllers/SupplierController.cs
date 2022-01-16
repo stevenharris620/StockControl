@@ -48,7 +48,7 @@ namespace StockControl.API.Controllers
         [HttpGet("suppliers")]
         [ProducesResponseType(200, Type = typeof(ApiResponse<PagedList<SupplierDetail>>))]
         [ProducesResponseType(400, Type = typeof(ApiResponse<PagedList<SupplierDetail>>))]
-        public IActionResult GetAll(string query, int pageNumber, int pageSize)
+        public IActionResult GetAll(string? query, int pageNumber, int pageSize)
         {
             var result = _supplierService.GetSuppliersAsync(query, pageNumber, pageSize);
 

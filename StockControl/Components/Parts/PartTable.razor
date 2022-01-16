@@ -2,14 +2,15 @@
 @using StockControl.Services
 @using AKSoftware.Blazor.Utilities
  @namespace StockControl.Components
- 
-  <MudTable ServerData="@(new Func<TableState, Task<TableData<PartDetail>>>(ServerReloadAsync))"
-		  Dense="true" Hover="true" @ref="_table">
+
+
+<MudTable ServerData="@(new Func<TableState, Task<TableData<PartDetail>>>(ServerReloadAsync))"
+          Dense="true" Hover="true" @ref="_table"  Loading="@_loading" LoadingProgressColor="Color.Warning">
 	<ToolBarContent>
 		<MudText Typo="Typo.h6">Parts</MudText>
-		<MudSpacer />
-@*		<MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
-					  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>*@
+		<MudSpacer/>
+		<MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+		              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
 	</ToolBarContent>
 	<HeaderContent>
 		@*<MudTh><MudTableSortLabel SortLabel="image_field" T="PartDetail">Image</MudTableSortLabel></MudTh>*@
@@ -26,11 +27,11 @@
 		<MudTd DataLabel="Cost">@context.Cost</MudTd>
 		<MudTd DataLabel="Stock Level">@context.StockLevel</MudTd>
 		<MudTd DataLabel="Actions">
-@*			<MudIconButton Icon="@Icons.Material.Filled.Preview" Color="Color.Success"
+			@*			<MudIconButton Icon="@Icons.Material.Filled.Preview" Color="Color.Success"
 						   OnClick="async ()=> await OnViewClicked.InvokeAsync(context)" />*@
 			<MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default"
-						   OnClick="async ()=> await OnEditClicked.InvokeAsync(context)" />
-	@*		<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error"
+			               OnClick="async () => await OnEditClicked.InvokeAsync(context)"/>
+			@*		<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error"
 						   OnClick="async ()=> await OnDeleteClicked.InvokeAsync(context)" />*@
 		</MudTd>
 	</RowTemplate>
@@ -41,11 +42,11 @@
 		<MudText>Loading...</MudText>
 	</LoadingContent>
 	<PagerContent>
-		<MudTablePager />
+		<MudTablePager PageSizeOptions="pageSizeOptions"/>
 	</PagerContent>
 </MudTable>
 
- @code {
+@code {
 	 [Inject] public HttpClient HttpClient { get; set; }
 	 [Inject] public IPartService PartService { get; set; }
 
@@ -58,24 +59,29 @@
 	 [Parameter]
 	 public EventCallback<PartDetail> OnDeleteClicked { get; set; }
 
-	 private string _query = "s";
+	 private string? _query = null;
 	 private MudTable<PartDetail> _table;
+	private int[] pageSizeOptions = new int[] { 5, 10, 15 };
+
+	[Parameter]
+	 public bool _loading { get; set; }
 
 	 protected override void OnInitialized()
 	 {
 		 MessagingCenter.Subscribe<PartsList, PartDetail>(this, "part_updated", async (sender, args) =>
 		 {
+
 			 await _table.ReloadServerData();
+			 
 			 StateHasChanged();
 		 });
 	 }
 
 	 private async Task<TableData<PartDetail>> ServerReloadAsync(TableState state)
 	 {
+		 var result = await PartService.GetPartsAsync(_query, state.Page+1, state.PageSize);
 
-		 var result = await PartService.GetPartsAsync(_query, state.Page, state.PageSize);
-
-		 return new TableData<PartDetail>
+		return new TableData<PartDetail>
 		 {
 			 Items = result.Value.Records,
 			 TotalItems = result.Value.ItemsCount

@@ -6,23 +6,27 @@
 		<MudText Typo="Typo.h5" Class="ml-3">Stock</MudText>
 		<MudSpacer />
 		<LoginDisplay/>
+
+		<MudToggleIconButton Toggled="@AlarmOn" 
+		                     Icon="@Icons.Material.Filled.DarkMode" Color="@Color.Primary" Title="Off" style="@(AlarmOn ? "color:yellow":"color:black")"
+		                     ToggledIcon="@Icons.Material.Filled.LightMode" ToggledColor="@Color.Inherit" ToggledTitle="On" ToggledChanged="OnToggledChanged"/>
 	</MudAppBar>
-	<MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+	<MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2" style="color:yellow">
+
 		<NavMenu></NavMenu>
 	</MudDrawer>
 	<MudMainContent>
 		@Body
 	</MudMainContent>
 </MudLayout>
-@code {
-	bool _drawerOpen = true;
 
-	void DrawerToggle()
-	{
-		_drawerOpen = !_drawerOpen;
-	}
-}
+@*<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
+<MudSwitch @bind-Checked="@_isDarkMode" Color="Color.Primary" Class="ma-4" T="bool" Label="Toggle Light/Dark Mode"/>
 
-<MudThemeProvider/>
+<MudText Class="ma-4">This is an example text!</MudText>*@
+
+
+
+<MudThemeProvider Theme="_currentTheme"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>

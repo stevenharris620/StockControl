@@ -15,7 +15,7 @@ public interface IPartService
     Task<Part> UpdateAsync(PartDetail model);
     Task<Part> RemoveAsync(string id);
 
-    PagedList<PartDetail> GetPartsAsync(string query, int pageNumber = 1, int pageSize = 10);
+    PagedList<PartDetail> GetPartsAsync(string query = "", int pageNumber = 1, int pageSize = 10);
 }
 
 public class PartService : IPartService
@@ -72,17 +72,17 @@ public class PartService : IPartService
         return part;
     }
 
-    public PagedList<PartDetail> GetPartsAsync(string query, int pageNumber = 1, int pageSize = 10)
+    public PagedList<PartDetail> GetPartsAsync(string query = "", int pageNumber = 1, int pageSize = 10)
     {
         if (pageNumber < 1) pageNumber = 1;
 
         var parts = _unitOfWork.Parts.GetAll().AsQueryable();
 
-        //if (!string.IsNullOrEmpty(query))
-        //	parts = parts.Where(c =>
-        //		c.Name!.ToLower().Contains(query.ToLower()) || c.Description!.ToLower().Contains(query.ToLower()));
+        if (!string.IsNullOrEmpty(query))
+            parts = parts.Where(c =>
+                c.Name!.ToLower().Contains(query.ToLower()) || c.Description!.ToLower().Contains(query.ToLower()));
 
-        //var totalRecords = parts.Count();
+        var totalRecords = parts.Count();
 
         parts = parts.OrderBy(x => x.Name);
 

@@ -20,7 +20,7 @@ namespace StockControl.Components
         [Parameter]
         public EventCallback<SupplierDetail> OnDeleteClicked { get; set; }
 
-        private string _query = "s";
+        private string? _query = null;
         private MudTable<SupplierDetail> _table;
 
         protected override void OnInitialized()
@@ -35,7 +35,7 @@ namespace StockControl.Components
         private async Task<TableData<SupplierDetail>> ServerReloadAsync(TableState state)
         {
 
-            var result = await SupplierService.GetSuppliersAsync(_query, state.Page, state.PageSize);
+            var result = await SupplierService.GetSuppliersAsync(_query, state.Page + 1, state.PageSize);
 
             return new TableData<SupplierDetail>
             {
