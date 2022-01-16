@@ -6,7 +6,7 @@
 @using StockControl.Shared.Response
 @namespace StockControl.Components
 
-<EditForm Model="_model" OnValidSubmit="SubmitFormAsync" style="width: 800px">
+<EditForm Model="_model" OnValidSubmit="SubmitFormAsync" style="width: 820px">
 	
 	@if (!string.IsNullOrWhiteSpace(_errorMessage))
 	{
@@ -15,44 +15,36 @@
 	
 	<DataAnnotationsValidator />
 	
-	
-	<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
-		<MudGrid>
-	@*				<MudItem xs="12" sm="6" md="4">
-				<MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-			</MudItem>
-			<MudItem xs="12" sm="6" md="4">
-				<MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-			</MudItem>
-			<MudItem xs="12" sm="12" md="4">
-				<MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-			</MudItem>*@
-			<MudItem xs="12" sm="7">
-				<MudGrid>
-					<MudItem xs="12">
-						<MudTextField Label="Name"  @bind-Value="@_model.Name"  Variant="Variant.Outlined"/>
-						<ValidationMessage For="@(() => _model.Name)"/>
-					</MudItem>
-					<MudItem xs="12">
-						<MudTextField Label="Description" Lines="4" @bind-Value="@_model.Description"  Variant="Variant.Outlined"/>
-						<ValidationMessage For="@(() => _model.Description)"/>
-					</MudItem>
+	<div style="padding: 10px">
+	<div class="row">
+		<div class="col-7">
+			<div class="row">
+				<div class="col-12">
+					<MudTextField Label="Name"  @bind-Value="@_model.Name"  Variant="Variant.Outlined"/>
+					<ValidationMessage For="@(() => _model.Name)"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12 mt-1">
+					<MudTextField Label="Description" Lines="4" @bind-Value="@_model.Description"  Variant="Variant.Outlined"/>
+					<ValidationMessage For="@(() => _model.Description)"/>
+				</div>
+			</div>
+		</div>
+		<div class="col-5">
 
-				</MudGrid>
-			</MudItem>
-	<MudItem xs="12" sm="5" Class="personPhoto">
-@*		<div class="personPhoto" style="background-color: aquamarine">*@
-			<MudCardMedia Image="Default.png" Height="213" />
-			@*	@if (string.IsNullOrEmpty(_model.ImageChar64))
-					{
-						<MudCardMedia Image="Default.png" Height="280" />
-					}
-					else
-					{
-						<MudCardMedia Image="@_model.ImageChar64" Height="310" />
-					}*@
+			<div class="personPhoto">
+			@if (string.IsNullOrEmpty(_model.ImageChar64))
+			{
+				@*<MudCardMedia Image="Default.png" Height="200"/>*@
+				<image src="Default.png" Height="200"/>
+			}
+			else
+			{
+				<MudCardMedia Image="@_model.ImageChar64" Height="280"/>
+			}
 			<InputFile id="fileInput" OnChange="OnChooseFileAsync" hidden/>
-			<MudFab HtmlTag="label" OnChange="OnChooseFileAsync" DisableElevation="true" 
+			<MudFab HtmlTag="label" OnChange="OnChooseFileAsync" DisableElevation="true"
 			        Style="background-color: transparent; height: 10px" Class="hover-item imageButton"
 			        Color="Color.Secondary"
 			        Icon="@Icons.Outlined.CameraAlt" IconColor="Color.Success"
@@ -61,48 +53,57 @@
 			{
 				<MudChip class="imagechip" Color="Color.Success">New Image :- @_fileName</MudChip>
 			}
-	@*	</div>*@
-	</MudItem>
-	<MudItem xs="12" sm="12" md="12">
-		<MudTextField Label="PartCode"  @bind-Value="@_model.PartCode"  Variant="Variant.Outlined"/>
-		<ValidationMessage For="@(() => _model.PartCode)"/>
-	</MudItem>
-			<MudItem xs="12" sm="6" md="3">
-				<MudTextField Label="Cost"  @bind-Value="@_model.Cost"  Variant="Variant.Outlined"/>
-			</MudItem>
-			<MudItem xs="12" sm="6" md="3">
-				@*<MudTextField Label="Unit Type"  @bind-Value="@_model.UnitType"  Variant="Variant.Outlined"/>*@
-				<MudSelect Variant="Variant.Outlined"  @bind-Value="_unitType" Placeholder="Select Unit Type" Required
-				            AdornmentColor="Color.Primary">
-					<MudSelectItem Value="@("Box")" >Box</MudSelectItem>
-					<MudSelectItem Value="@("Length")">Length</MudSelectItem>
-					<MudSelectItem Value="@("Each")">Each</MudSelectItem>
-				</MudSelect>
-			</MudItem>
-			<MudItem xs="12" sm="12" md="3">
-				<MudTextField Label="Stock Level"  @bind-Value="@_model.StockLevel"  Variant="Variant.Outlined"/>
-			</MudItem>	
-			<MudItem xs="12" sm="12" md="3">
-				<MudTextField Label="Reorder Level"  @bind-Value="@_model.ReorderLevel"  Variant="Variant.Outlined"/>
-			</MudItem>	
-			<MudItem xs="12" sm="12" md="12">
-				<MudSelect T="SupplierDetail"  Variant="Variant.Outlined" @bind-Value="SelectedSupplier" Placeholder="Select Supplier" Required="true"
-				          AdornmentColor="Color.Primary">
-					@foreach (var supplier in _suppliers)
-					{
-						<MudSelectItem Value="@supplier">@supplier.Name</MudSelectItem>
-					}
-		
-
-				</MudSelect>
-			</MudItem>
-		</MudGrid>
-	</MudContainer>
+			</div>
+		</div>
+	</div>
 	
-	<MudDivider DividerType="DividerType.FullWidth" Class="mt-3" />
-
-	<MudButton Color="Color.Primary" Variant="Variant.Filled"
-	           ButtonType="ButtonType.Submit" FullWidth="true" Disabled="_isBusy">Save</MudButton>
+	<div class="row">
+		<div class="col-12 mt-1">
+			<MudTextField Label="PartCode"  @bind-Value="@_model.PartCode"  Variant="Variant.Outlined"/>
+			<ValidationMessage For="@(() => _model.PartCode)"/>
+		</div>
+	</div>
+	
+	<div class="row mt-1">
+		<div class="col-3">
+			<MudTextField Label="Cost"  @bind-Value="@_model.Cost"  Variant="Variant.Outlined"/>
+		</div>
+		<div class="col-3">
+			<MudSelect Variant="Variant.Outlined"  @bind-Value="_unitType" Placeholder="Select Unit Type" Required
+			           AdornmentColor="Color.Primary">
+				<MudSelectItem Value="@("Box")" >Box</MudSelectItem>
+				<MudSelectItem Value="@("Length")">Length</MudSelectItem>
+				<MudSelectItem Value="@("Each")">Each</MudSelectItem>
+			</MudSelect>
+		</div>
+		<div class="col-3">
+			<MudTextField Label="Stock Level"  @bind-Value="@_model.StockLevel"  Variant="Variant.Outlined"/>
+		</div>
+		<div class="col-3">
+			<MudTextField Label="Reorder Level"  @bind-Value="@_model.ReorderLevel"  Variant="Variant.Outlined"/>
+		</div>
+	</div>
+	<div class="row mt-1">
+		<div class="col-12">
+			<MudSelect T="SupplierDetail"  Variant="Variant.Outlined" @bind-Value="SelectedSupplier" Placeholder="Select Supplier" Required="true"
+			           AdornmentColor="Color.Primary">
+				@foreach (var supplier in _suppliers)
+				{
+					<MudSelectItem Value="@supplier">@supplier.Name</MudSelectItem>
+				}
+			</MudSelect>
+		</div>
+	</div>
+	
+	<div class="row mt-3">
+		<div class="col-12">
+			<MudButton Color="Color.Primary" Variant="Variant.Filled"
+			           ButtonType="ButtonType.Submit" FullWidth="true" Disabled="_isBusy">Save</MudButton>
+		</div>
+	</div>
+	
+	</div>
+	
 
 </EditForm>
 
@@ -112,6 +113,7 @@
 	[Inject] public ISupplierService SupplierService { get; set; }
 
 	[Inject] public NavigationManager NavigationManager { get; set; }
+	[Inject] ISnackbar Snackbar{ get; set; }
 
 	[CascadingParameter] private BlazoredModalInstance ModalInstance { get; set; }
 
@@ -207,8 +209,10 @@
 				var result = await PartService.CreateAsync(_model, formFile);
 			}
 
-			await ModalInstance.CloseAsync(ModalResult.Ok(_model));
-			MessagingCenter.Send(this, "part_updated", _model);
+			//await ModalInstance.CloseAsync(ModalResult.Ok(_model));
+			//MessagingCenter.Send(this, "part_updated", _model);
+
+			Snackbar.Add("Record Saved", Severity.Success);
 
 		}
 		catch (ApiException ex)

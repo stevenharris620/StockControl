@@ -60,7 +60,7 @@ public class SuppliersService : ISupplierService
         return await GetResponse(response);
     }
 
-    public async Task<ApiResponse<PagedList<SupplierDetail>>> GetSuppliersAsync(string query, int pageNumber = 1, int pageSize = 10)
+    public async Task<ApiResponse<PagedList<SupplierDetail>>> GetSuppliersAsync(string? query, int pageNumber = 1, int pageSize = 10)
     {
         try
         {

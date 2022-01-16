@@ -8,7 +8,7 @@ namespace StockControl.Services
 {
     public interface IPartService
     {
-        Task<ApiResponse<PagedList<PartDetail>>> GetPartsAsync(string query = null, int pageNumber = 1, int pageSize = 10);
+        Task<ApiResponse<PagedList<PartDetail>>> GetPartsAsync(string query, int pageNumber = 1, int pageSize = 10);
         Task<ApiResponse<PartDetail>> GetByIdAsync(string id);
         Task<ApiResponse<PartDetail>> CreateAsync(PartDetail playerDetail, FormFile? image);
         Task<ApiResponse<PartDetail>> EditAsync(PartDetail playerDetail, FormFile? image);
@@ -23,19 +23,18 @@ namespace StockControl.Services
             _httpClient = httpClient;
         }
 
-        public async Task<ApiResponse<PagedList<PartDetail>>> GetPartsAsync(string query, int pageNumber = 1, int pageSize = 10)
+        public async Task<ApiResponse<PagedList<PartDetail>>> GetPartsAsync(string? query, int pageNumber = 1, int pageSize = 10)
         {
+
             try
             {
                 if (pageNumber < 1) pageNumber = 1;
-                query = "a";
-                var response = await _httpClient.GetAsync($"api/part/parts?query={query}&pageNumber={pageNumber}&pageSize={pageSize}");
-
-
+                var response = await _httpClient.GetAsync($"/api/part/parts?query={query}&pageNumber={pageNumber}&pageSize={pageSize}");
 
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadFromJsonAsync<ApiResponse<PagedList<PartDetail>>>();
+                    //throw new Exception("COunt :- " + result.Value.ItemsCount);
                     return result;
                 }
                 else
@@ -85,6 +84,7 @@ namespace StockControl.Services
 
         public async Task<ApiResponse<PartDetail>> EditAsync(PartDetail playerDetail, FormFile? imagel)
         {
+
             var response = await _httpClient.PutAsJsonAsync("api/part", playerDetail);
             return await GetResponse(response);
         }

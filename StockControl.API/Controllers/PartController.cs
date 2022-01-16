@@ -46,8 +46,9 @@ namespace StockControl.API.Controllers
         [HttpGet("parts")]
         [ProducesResponseType(200, Type = typeof(ApiResponse<PagedList<PartDetail>>))]
         [ProducesResponseType(400, Type = typeof(ApiResponse<PagedList<PartDetail>>))]
-        public IActionResult GetAll(string query, int pageNumber, int pageSize)
+        public IActionResult GetAll([FromQueryAttribute] string? query, int pageNumber, int pageSize)
         {
+            Console.Write("PN - " + pageNumber);
             var result = _partService.GetPartsAsync(query, pageNumber, pageSize);
 
             return Ok(new ApiResponse<PagedList<PartDetail>>(result, "Parts retrieved successfully"));

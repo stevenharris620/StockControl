@@ -16,9 +16,9 @@
         }
 
         public int TotalPages { get; set; }
-        public int Page { get; }
-        public int PageSize { get; }
-        public int ItemsCount { get; private set; }
+        public int Page { get; set; }
+        public int PageSize { get; set; }
+        public int ItemsCount { get; set; }
         public List<T> Records { get; set; }
 
         private void PrepareData(IEnumerable<T> data, int page, int pageSize)

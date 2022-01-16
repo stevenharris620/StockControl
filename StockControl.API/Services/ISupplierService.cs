@@ -85,9 +85,9 @@ public class SupplierService : ISupplierService
 
         var suppliers = _unitOfWork.Suppliers.GetAll().AsQueryable();
 
-        //if (!string.IsNullOrEmpty(query))
-        //    suppliers = suppliers.Where(c =>
-        //        c.Name!.ToLower().Contains(query.ToLower()) || c.Email!.ToLower().Contains(query.ToLower()));
+        if (!string.IsNullOrEmpty(query))
+            suppliers = suppliers.Where(c =>
+                c.Name!.ToLower().Contains(query.ToLower()) || c.Email!.ToLower().Contains(query.ToLower()));
 
         var totalRecords = suppliers.Count();
 

@@ -9,7 +9,7 @@
  
  <div class="mt-4">
 		 @*<PlayersCardList FetchPlayers="GetPartsAsync" OnEditClicked="EditPlayer"  OnDeleteClicked="DeletePlayerAsync"/>*@
-		 <PartTable OnEditClicked="EditPart" />
+		 <PartTable OnEditClicked="EditPart" _loading="@_loading" />
 	
  </div>
 
@@ -20,6 +20,8 @@
 	 [Inject] public IDialogService DialogService { get; set; }
 
 	 [CascadingParameter] public IModalService Modal { get; set; }
+
+	 public bool _loading = true;
 
 	 private string _errorMessage = string.Empty;
 	 private bool _isBusy = false;
@@ -33,9 +35,13 @@
 
 	 private async Task AddPart()
 	 {
+		 _loading = false;
+		 var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraExtraLarge, DisableBackdropClick = true };
+		 var dialog = DialogService.Show<PartForm>("Add a part", options);
 
-		 var modal = Modal.Show<PartForm>("Create a part");
-		 var result = await modal.Result;
+		 //var options = new ModalOptions() { Animation = ModalAnimation.FadeInOut(1) };
+		 //var modal = Modal.Show<PartForm>("Create a part",options);
+		 var result = await dialog.Result;
 
 		 Console.WriteLine(result.Cancelled ? "Modal was cancelled" : "Modal was closed");
 
@@ -44,10 +50,23 @@
 
 	 private async Task EditPart(PartDetail part)
 	 {
-		 var parameters = new ModalParameters();
+		 _loading = false;
+		 var parameters = new DialogParameters();
+		 //parameters.Add("ContentText",
+			// $"Do you really want to delete this player This process cannot be undone.");
+		 //parameters.Add("ButtonText", "Delete");
+		 //parameters.Add("Color", Color.Error);
 		 parameters.Add(nameof(part.Id), part.Id);
-		 var modal = Modal.Show<PartForm>("Edit a part", parameters);
-		 var result = await modal.Result;
+
+		 var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraExtraLarge, DisableBackdropClick = true };
+
+		 var dialog = DialogService.Show<PartForm>("Edit a part", parameters, options);
+		 var result = await dialog.Result;
+
+		 //var parameters = new ModalParameters();
+		 //parameters.Add(nameof(part.Id), part.Id);
+		 //var modal = Modal.Show<PartForm>("Edit a part", parameters);
+		 //var result = await modal.Result;
 
 		 Console.WriteLine(result.Cancelled ? "Modal was cancelled" : "Modal was closed");
 		 MessagingCenter.Send(this, "part_updated", part);
