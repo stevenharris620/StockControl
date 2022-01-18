@@ -82,10 +82,11 @@ namespace StockControl.Services
         }
 
 
-        public async Task<ApiResponse<PartDetail>> EditAsync(PartDetail playerDetail, FormFile? imagel)
+        public async Task<ApiResponse<PartDetail>> EditAsync(PartDetail playerDetail, FormFile? image)
         {
+            var form = PreparePartForm(playerDetail, image, true);
 
-            var response = await _httpClient.PutAsJsonAsync("api/part", playerDetail);
+            var response = await _httpClient.PutAsync("api/part", form);
             return await GetResponse(response);
         }
 
@@ -94,7 +95,7 @@ namespace StockControl.Services
             throw new NotImplementedException();
         }
 
-        private HttpContent PrepareClubForm(PartDetail model, FormFile? imageFile, bool isUpdate)
+        private HttpContent PreparePartForm(PartDetail model, FormFile? imageFile, bool isUpdate)
         {
             var form = new MultipartFormDataContent();
 
@@ -105,19 +106,19 @@ namespace StockControl.Services
             {
                 form.Add(new StringContent(model.Id), nameof(PartDetail.Id));
             }
-            else
-            {
-                model.Id = "";
-                form.Add(new StringContent(model.Id), nameof(PartDetail.Id));
-            }
+            //else
+            //{
+            //    model.Id = "";
+            //    form.Add(new StringContent(model.Id), nameof(PartDetail.Id));
+            //}
 
             if (!string.IsNullOrEmpty(model.PartCode))
                 form.Add(new StringContent(model.PartCode), nameof(PartDetail.PartCode));
-            else
-            {
-                model.PartCode = " ";
-                form.Add(new StringContent(model.PartCode), nameof(PartDetail.PartCode));
-            }
+            //else
+            //{
+            //    model.PartCode = " ";
+            //    form.Add(new StringContent(model.PartCode), nameof(PartDetail.PartCode));
+            //}
 
             if (!string.IsNullOrEmpty(model.Description))
                 form.Add(new StringContent(model.Description), nameof(PartDetail.Description));
@@ -125,8 +126,10 @@ namespace StockControl.Services
 
 
             form.Add(new StringContent(model.Cost.ToString()), nameof(PartDetail.Cost));
+
             if (!string.IsNullOrEmpty(model.UnitType))
                 form.Add(new StringContent(model.UnitType.ToString()), nameof(PartDetail.UnitType));
+
             form.Add(new StringContent(model.StockLevel.ToString()), nameof(PartDetail.StockLevel));
             form.Add(new StringContent(model.ReorderLevel.ToString()), nameof(PartDetail.ReorderLevel));
 
@@ -135,11 +138,11 @@ namespace StockControl.Services
             if (!string.IsNullOrEmpty(model.SupplierId))
                 form.Add(new StringContent(model.SupplierId), nameof(PartDetail.SupplierId));
 
-            //if (!string.IsNullOrWhiteSpace(model.ImageChar64))
-            //    form.Add(new StringContent(model.ImageChar64), nameof(PartDetail.ImageChar64));
+            if (!string.IsNullOrWhiteSpace(model.ImageChar64))
+                form.Add(new StringContent(model.ImageChar64), nameof(PartDetail.ImageChar64));
 
-            //if (imageFile != null)
-            //    form.Add(new StreamContent(imageFile.FileStream), nameof(model.Image), imageFile.FileName);
+            if (imageFile != null)
+                form.Add(new StreamContent(imageFile.FileStream), nameof(model.ThumbFile), imageFile.FileName);
 
 
             return form;

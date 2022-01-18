@@ -41,7 +41,7 @@
 			}
 			else
 			{
-				<MudCardMedia Image="@_model.ImageChar64" Height="280"/>
+				<MudCardMedia Image="@_model.ImageChar64" Height="200"/>
 			}
 			<InputFile id="fileInput" OnChange="OnChooseFileAsync" hidden/>
 			<MudFab HtmlTag="label" OnChange="OnChooseFileAsync" DisableElevation="true"
@@ -66,7 +66,7 @@
 	
 	<div class="row mt-1">
 		<div class="col-3">
-			<MudTextField Label="Cost"  @bind-Value="@_model.Cost"  Variant="Variant.Outlined"/>
+			<MudTextField Label="Cost"  @bind-Value="@_model.Cost"  Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.CurrencyPound"/>
 		</div>
 		<div class="col-3">
 			<MudSelect Variant="Variant.Outlined"  @bind-Value="_unitType" Placeholder="Select Unit Type" Required
@@ -85,13 +85,14 @@
 	</div>
 	<div class="row mt-1">
 		<div class="col-12">
-			<MudSelect T="SupplierDetail"  Variant="Variant.Outlined" @bind-Value="SelectedSupplier" Placeholder="Select Supplier" Required="true"
+			<MudSelect T="SupplierDetail"  Variant="Variant.Outlined" @bind-Value="@SelectedSupplier" Placeholder="Select Supplier" Required="true" Strict="true"
 			           AdornmentColor="Color.Primary">
 				@foreach (var supplier in _suppliers)
 				{
 					<MudSelectItem Value="@supplier">@supplier.Name</MudSelectItem>
 				}
 			</MudSelect>
+@*			<ValidationMessage For="@(() => _model.SupplierId)"/>*@
 		</div>
 	</div>
 	
@@ -124,7 +125,7 @@
 	[Parameter] public string Id { get; set; }
 	private bool _isEditMode => Id != null;
 
-	private PartDetail _model = new(){SupplierId = "1ac5919b-3f6d-480b-95db-a19b8eb6607c"};
+	private PartDetail _model = new();
 	private Stream? _stream = null;
 
 	private string _errorMessage = string.Empty;
@@ -143,6 +144,15 @@
 			_unitType = _model.UnitType;
 	         SelectedSupplier = _suppliers.FirstOrDefault(x => x.Id == _model.SupplierId);
 		}
+		else
+		{
+			if(_suppliers.Any())
+				SelectedSupplier = _suppliers.FirstOrDefault();
+
+			_unitType = "Box";
+		}
+
+	    StateHasChanged();
 	}
 
 	private async Task FetchPartByIdAsync()
@@ -163,7 +173,7 @@
 		_isBusy = false;
 	}
 
-	private async Task<PagedList<SupplierDetail>> GetSuppliersAsync(string query = "a", int pageNumber = 1,
+	private async Task<PagedList<SupplierDetail>> GetSuppliersAsync(string query="", int pageNumber = 1,
 		int pageSize = 100)
 	{
 		_isBusy = true;

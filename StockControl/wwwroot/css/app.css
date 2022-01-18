@@ -73,6 +73,7 @@ a, .btn-link {
         object-fit: cover;
         width: 100%;
         border: 2px solid black;
+        max-height: 200px;
     }
 
 .imageButton {
@@ -82,19 +83,19 @@ a, .btn-link {
 }
 
 .imagechip {
-    position: absolute;
+    position: absolute  !important;
     margin: auto;
-    bottom: 1.25em;
-    left: 1.25em;
+    top: 1.25em;
+    left: .50em;
 }
 
 .hover-item {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
 }
 
     .hover-item:hover {
-        width: 48px;
-        height: 48px;
+        width: 44px;
+        height: 44px;
         background-color: whitesmoke !important;
     }

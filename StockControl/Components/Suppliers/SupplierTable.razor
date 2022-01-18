@@ -2,7 +2,7 @@
  @namespace StockControl.Components
 
  <MudTable ServerData="@(new Func<TableState, Task<TableData<SupplierDetail>>>(ServerReloadAsync))"
-		  Dense="true" Hover="true" @ref="_table">
+		  Dense="true" Hover="true" @ref="_table" Loading="@_loading" LoadingProgressColor="Color.Warning">
 	<ToolBarContent>
 		<MudText Typo="Typo.h6">Stock</MudText>
 		<MudSpacer />
