@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace StockControl.Shared.Requests
 {
@@ -16,7 +17,7 @@ namespace StockControl.Shared.Requests
         [Required] public string? Name { get; set; }
         public string PartCode { get; set; }
         public string Description { get; set; }
-        public double Cost { get; set; }
+        public double? Cost { get; set; }
         public string UnitType { get; set; }
         public int StockLevel { get; set; }
         public int ReorderLevel { get; set; }
@@ -27,5 +28,6 @@ namespace StockControl.Shared.Requests
 
         // Cosmetic
         public string ImageChar64 { get; set; }
+        public IFormFile? ThumbFile { get; set; }
     }
 }

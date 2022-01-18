@@ -1,5 +1,4 @@
 using AKSoftware.Blazor.Utilities;
-using Blazored.Modal;
 using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -16,6 +15,8 @@ namespace StockControl.Components
         [Inject] public IDialogService DialogService { get; set; }
         [CascadingParameter] public IModalService Modal { get; set; }
 
+        public bool _loading = true;
+
         private List<SupplierDetail> _suppliers = new();
 
         private string _errorMessage = string.Empty;
@@ -27,8 +28,11 @@ namespace StockControl.Components
 
         private async Task AddSupplier()
         {
-            var modal = Modal.Show<SupplierForm>("Create a supplier");
-            var result = await modal.Result;
+            _loading = false;
+            var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraExtraLarge, DisableBackdropClick = true };
+
+            var dialog = DialogService.Show<SupplierForm>("Add a supplier", options);
+            var result = await dialog.Result;
 
             Console.WriteLine(result.Cancelled ? "Modal was cancelled" : "Modal was closed");
             MessagingCenter.Send(this, "supplier_updated", new SupplierDetail());
@@ -36,10 +40,13 @@ namespace StockControl.Components
 
         private async Task EditSupplier(SupplierDetail supplier)
         {
-            var parameters = new ModalParameters();
+            _loading = false;
+
+            var parameters = new DialogParameters();
             parameters.Add(nameof(supplier.Id), supplier.Id);
-            var modal = Modal.Show<SupplierForm>("Edit a supplier", parameters);
-            var result = await modal.Result;
+            var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraExtraLarge, DisableBackdropClick = true };
+            var dialog = DialogService.Show<SupplierForm>("Edit a supplier", parameters, options);
+            var result = await dialog.Result;
 
             Console.WriteLine(result.Cancelled ? "Modal was cancelled" : "Modal was closed");
             MessagingCenter.Send(this, "supplier_updated", supplier);
@@ -47,6 +54,7 @@ namespace StockControl.Components
 
         private async void DeleteSupplierAsync(SupplierDetail zone)
         {
+            _loading = false;
             var parameters = new DialogParameters();
             parameters.Add("ContentText",
                 $"Do you really want to delete this zone {zone.Name} This process cannot be undone.");

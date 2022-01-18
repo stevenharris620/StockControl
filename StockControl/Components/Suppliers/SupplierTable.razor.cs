@@ -20,6 +20,9 @@ namespace StockControl.Components
         [Parameter]
         public EventCallback<SupplierDetail> OnDeleteClicked { get; set; }
 
+        [Parameter]
+        public bool _loading { get; set; }
+
         private string? _query = null;
         private MudTable<SupplierDetail> _table;
 

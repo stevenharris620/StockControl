@@ -30,8 +30,8 @@ namespace StockControl.API.Mappers
             partDetail.ReorderLevel = part.ReorderLevel;
             partDetail.SupplierId = part.SupplierId;
 
-            //partDetail.ImageChar64 =
-            //    part.Image == null ? String.Empty : _imageService.ConvertByteArrayToChar64(part.Image);
+            partDetail.ImageChar64 =
+                part.Image.Length == 0 ? String.Empty : _imageService.ConvertByteArrayToChar64(part.Image);
 
             return partDetail;
         }
@@ -43,14 +43,14 @@ namespace StockControl.API.Mappers
             part.Name = partDetail.Name;
             part.PartCode = partDetail.PartCode;
             part.Description = partDetail.Description;
-            part.Cost = partDetail.Cost;
+            part.Cost = partDetail.Cost ?? 0;
             part.UnitType = partDetail.UnitType;
             part.StockLevel = partDetail.StockLevel;
             part.ReorderLevel = partDetail.ReorderLevel;
             part.SupplierId = partDetail.SupplierId;
 
-            //if (partDetail.Image != null)
-            //    part.Image = _imageService.ConvertImageToByteArray(partDetail.Image);
+            if (partDetail.ThumbFile != null)
+                part.Image = _imageService.ConvertImageToByteArray(partDetail.ThumbFile);
 
             return part;
         }

@@ -3,5 +3,5 @@
 <MudIconButton Icon="@Icons.Material.Filled.Add" Color=" Color.Success"  OnClick="AddSupplier"></MudIconButton>
 
 <div class="mt-4">
-	<SupplierTable OnEditClicked="EditSupplier" OnDeleteClicked="DeleteSupplierAsync"/>
+	<SupplierTable _loading="@_loading"  OnEditClicked="EditSupplier" OnDeleteClicked="DeleteSupplierAsync"/>
 </div>
