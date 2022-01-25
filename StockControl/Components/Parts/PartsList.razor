@@ -1,15 +1,22 @@
 ﻿@using StockControl.Shared.Requests
 @using AKSoftware.Blazor.Utilities
 @using StockControl.Components
+@using StockControl.Infrastucture
 @using StockControl.Services
+@using System.Security.Claims
 
  @namespace StockControl.Components
  
- <MudIconButton Icon="@Icons.Material.Filled.Add" Color=" Color.Success"  OnClick="AddPart"></MudIconButton>
+<AuthorizeView Roles="Manager">
+	<Authorized>
+		<MudIconButton Icon="@Icons.Material.Filled.Add" Color=" Color.Success"  OnClick="AddPart"></MudIconButton>
+	</Authorized>
+</AuthorizeView>
+
  
  <div class="mt-4">
 		 @*<PlayersCardList FetchPlayers="GetPartsAsync" OnEditClicked="EditPlayer"  OnDeleteClicked="DeletePlayerAsync"/>*@
-		 <PartTable OnEditClicked="EditPart" _loading="@_loading" />
+		 <PartTable OnEditClicked="EditPart" OnViewClicked="ViewPart" _loading="@_loading" />
 	
  </div>
 
@@ -18,6 +25,7 @@
 
 	 [Inject] public NavigationManager NavigationManager { get; set; }
 	 [Inject] public IDialogService DialogService { get; set; }
+
 
 	 [CascadingParameter] public IModalService Modal { get; set; }
 
@@ -49,12 +57,25 @@
 	 private async Task EditPart(PartDetail part)
 	 {
 		 _loading = false;
-		 var parameters = new DialogParameters();
-		 parameters.Add(nameof(part.Id), part.Id);
+		 var parameters = new DialogParameters { { nameof(part.Id), part.Id },{"isView", false} };
 
 		 var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraExtraLarge, DisableBackdropClick = true };
 
 		 var dialog = DialogService.Show<PartForm>("Edit a part", parameters, options);
+		 var result = await dialog.Result;
+
+		 Console.WriteLine(result.Cancelled ? "Modal was cancelled" : "Modal was closed");
+		 MessagingCenter.Send(this, "part_updated", part);
+	 }
+
+	 private async Task ViewPart(PartDetail part)
+	 {
+		 _loading = false;
+		 var parameters = new DialogParameters { { nameof(part.Id), part.Id },{"isView", true} };
+
+		 var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraExtraLarge, DisableBackdropClick = true };
+
+		 var dialog = DialogService.Show<PartForm>("View a part", parameters, options);
 		 var result = await dialog.Result;
 
 		 Console.WriteLine(result.Cancelled ? "Modal was cancelled" : "Modal was closed");

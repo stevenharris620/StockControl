@@ -42,8 +42,7 @@ namespace StockControl.Components
         {
             _loading = false;
 
-            var parameters = new DialogParameters();
-            parameters.Add(nameof(supplier.Id), supplier.Id);
+            var parameters = new DialogParameters { { nameof(supplier.Id), supplier.Id } };
             var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraExtraLarge, DisableBackdropClick = true };
             var dialog = DialogService.Show<SupplierForm>("Edit a supplier", parameters, options);
             var result = await dialog.Result;
@@ -55,11 +54,12 @@ namespace StockControl.Components
         private async void DeleteSupplierAsync(SupplierDetail zone)
         {
             _loading = false;
-            var parameters = new DialogParameters();
-            parameters.Add("ContentText",
-                $"Do you really want to delete this zone {zone.Name} This process cannot be undone.");
-            parameters.Add("ButtonText", "Delete");
-            parameters.Add("Color", Color.Error);
+            var parameters = new DialogParameters
+            {
+                { "ContentText", $"Do you really want to delete this zone {zone.Name} This process cannot be undone." },
+                { "ButtonText", "Delete" },
+                { "Color", Color.Error }
+            };
 
             var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 

@@ -6,6 +6,7 @@ namespace StockControl.Shared.Requests
     {
         public SupplierDetail()
         {
+            Id = String.Empty;
             Add1 = String.Empty;
             Add2 = String.Empty;
             Add3 = String.Empty;

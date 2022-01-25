@@ -21,6 +21,8 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddIdentityAuthentication(builder.Configuration);
 builder.Services.AddApplicationDatabaseContext(builder.Configuration);
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
