@@ -1,7 +1,6 @@
-using AKSoftware.Blazor.Utilities;
 using Blazored.Modal;
-using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using StockControl.Services;
 using StockControl.Services.Exceptions;
 using StockControl.Shared.Requests;
@@ -13,6 +12,7 @@ namespace StockControl.Components
         //[Inject] public HttpClient HttpClient { get; set; }
         [Inject] public ISupplierService SupplierService { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
+        [Inject] ISnackbar Snackbar { get; set; }
         [CascadingParameter] private BlazoredModalInstance ModalInstance { get; set; }
 
         [Parameter] public string Id { get; set; }
@@ -53,9 +53,7 @@ namespace StockControl.Components
                     var result = await SupplierService.CreateAsync(_model);
                 }
 
-                await ModalInstance.CloseAsync(ModalResult.Ok(_model));
-                MessagingCenter.Send(this, "supplier_updated", _model);
-                NavigationManager.NavigateTo("/suppliers");
+                Snackbar.Add("Record Saved", Severity.Success); ;
             }
             catch (ApiException ex)
             {

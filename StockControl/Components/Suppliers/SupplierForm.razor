@@ -1,6 +1,7 @@
 ﻿ @namespace StockControl.Components
  
- <EditForm Model="_model" OnValidSubmit="SubmitFormAsync" style="width: 800px">
+ <div class="p-3">
+ <EditForm Model="_model" OnValidSubmit="SubmitFormAsync" style="width: 800px;">
 	 
 	 @if (!string.IsNullOrWhiteSpace(_errorMessage))
 	 {
@@ -25,5 +26,6 @@
 	            ButtonType="ButtonType.Submit" FullWidth="true" Disabled="_isBusy">Save</MudButton>
 
  </EditForm>
+ </div>
 
 
