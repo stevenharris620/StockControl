@@ -44,7 +44,7 @@ namespace StockControl.Components
 
             var parameters = new DialogParameters { { nameof(supplier.Id), supplier.Id } };
             var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraExtraLarge, DisableBackdropClick = true };
-            var dialog = DialogService.Show<SupplierForm>("Edit a supplier", parameters, options);
+            var dialog = DialogService.Show<SupplierWrapper>("Edit a supplier", parameters, options);
             var result = await dialog.Result;
 
             Console.WriteLine(result.Cancelled ? "Modal was cancelled" : "Modal was closed");

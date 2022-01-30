@@ -1,0 +1,12 @@
+﻿ @namespace StockControl.Components
+
+ <MudTabs Outlined="true" Position="Position.Left" Rounded="true" Border="true"
+          ApplyEffectsToContainer="true" Class="mt-8" PanelClass="pa-6" Style="Width:1070px; height: 620px">
+	 <MudTabPanel Icon="@Icons.Filled.ImportContacts" Text="Details">
+		 <MudText><SupplierForm Id="@Id"></SupplierForm></MudText>
+	 </MudTabPanel>
+	 <MudTabPanel Icon="@Icons.Filled.Settings" Text="Parts">
+		 <MudText>C<SupplierPartSimpleTable></SupplierPartSimpleTable></MudText>
+	 </MudTabPanel>
+
+ </MudTabs>

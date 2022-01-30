@@ -2,7 +2,7 @@ using Blazored.Modal;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using StockControl.Services;
-using StockControl.Services.Exceptions;
+using StockControl.Shared;
 using StockControl.Shared.Requests;
 
 namespace StockControl.Components
@@ -14,6 +14,7 @@ namespace StockControl.Components
         [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] ISnackbar Snackbar { get; set; }
         [CascadingParameter] private BlazoredModalInstance ModalInstance { get; set; }
+        [CascadingParameter] public Error Error { get; set; }
 
         [Parameter] public string Id { get; set; }
 
@@ -39,7 +40,7 @@ namespace StockControl.Components
 
             try
             {
-
+                // throw new Exception("MASSIVE UNEXCEPTED ERROR");
                 if (_isEditMode)
                 {
 
@@ -48,20 +49,14 @@ namespace StockControl.Components
                 else
                 {
                     _model.Id = String.Empty;
-                    // var response = await HttpClient.PostAsJsonAsync("api/Supplier", _model);
-                    //_model.Id = String.Empty;
                     var result = await SupplierService.CreateAsync(_model);
                 }
 
                 Snackbar.Add("Record Saved", Severity.Success); ;
             }
-            catch (ApiException ex)
-            {
-                _errorMessage = ex.ApiErrorResponse.Message;
-            }
             catch (Exception ex)
             {
-                _errorMessage = ex.Message;
+                Error.HandleError(ex);
             }
 
 
@@ -79,7 +74,7 @@ namespace StockControl.Components
             }
             catch (Exception ex)
             {
-                _errorMessage = ex.Message;
+                Error.HandleError(ex);
             }
 
             _isBusy = false;

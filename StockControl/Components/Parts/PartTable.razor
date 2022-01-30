@@ -1,6 +1,7 @@
 ﻿@using StockControl.Shared.Requests
 @using StockControl.Services
 @using AKSoftware.Blazor.Utilities
+@using StockControl.Services.Exceptions
  @namespace StockControl.Components
 
 
@@ -65,6 +66,8 @@
 	 [Parameter]
 	 public EventCallback<PartDetail> OnDeleteClicked { get; set; }
 
+	[CascadingParameter] public Error Error { get; set; }
+
 	 private string? _query = null;
 	 private MudTable<PartDetail> _table;
 	private int[] pageSizeOptions = new int[] { 5, 10, 15 };
@@ -85,13 +88,27 @@
 
 	 private async Task<TableData<PartDetail>> ServerReloadAsync(TableState state)
 	 {
-		 var result = await PartService.GetPartsAsync(_query, state.Page+1, state.PageSize);
-
-		return new TableData<PartDetail>
+		 try
 		 {
-			 Items = result.Value.Records,
-			 TotalItems = result.Value.ItemsCount
-		 };
+			// throw new Exception();
+			 var result = await PartService.GetPartsAsync(_query, state.Page + 1, state.PageSize);
+
+			 return new TableData<PartDetail>
+			 {
+				 Items = result.Value.Records,
+				 TotalItems = result.Value.ItemsCount
+			 };
+		 }
+		 catch (ApiException ex)
+		 {
+			 Error.HandleError(ex);
+		 }
+		 catch (Exception ex)
+		 {
+			 Error.HandleError(ex);
+		 }
+		 return new TableData<PartDetail>();
+
 	 }
 
 	 private void OnSearch(string? query)

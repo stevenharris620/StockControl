@@ -57,6 +57,7 @@ public class SupplierService : ISupplierService
     }
     public async Task<Supplier> UpdateAsync(SupplierDetail model)
     {
+
         var supplier = await _unitOfWork.Suppliers.GetByIdAsync(model.Id);
 
         if (supplier == null) throw new NotFoundException($"Supplier with Id {model.Id} cannot be found");
