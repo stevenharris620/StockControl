@@ -32,16 +32,7 @@ namespace StockControl.API.Controllers
             ));
         }
 
-        [HttpPost]
-        [ProducesResponseType(200, Type = typeof(ApiResponse<PartDetail>))]
-        [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
-        public async Task<IActionResult> Create(PartDetail model)
-        {
-            var part = await _partService.CreateAsync(model);
 
-            return Ok(new ApiResponse<PartDetail>(_partsMapper.Map_Part_To_PartDetail(part, new PartDetail()),
-                "part Created"));
-        }
 
         [HttpGet("parts")]
         [ProducesResponseType(200, Type = typeof(ApiResponse<PagedList<PartDetail>>))]
@@ -52,6 +43,17 @@ namespace StockControl.API.Controllers
             var result = _partService.GetPartsAsync(query, pageNumber, pageSize);
 
             return Ok(new ApiResponse<PagedList<PartDetail>>(result, "Parts retrieved successfully"));
+        }
+
+        [HttpPost]
+        [ProducesResponseType(200, Type = typeof(ApiResponse<PartDetail>))]
+        [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
+        public async Task<IActionResult> Create([FromForm] PartDetail model)
+        {
+            var part = await _partService.CreateAsync(model);
+
+            return Ok(new ApiResponse<PartDetail>(_partsMapper.Map_Part_To_PartDetail(part, new PartDetail()),
+                "part Created"));
         }
 
         [HttpPut]

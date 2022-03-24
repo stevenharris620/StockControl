@@ -49,7 +49,8 @@ namespace StockControl.Shared
                 Surface = "#093958",
                 ActionDefault = "#0C1217",
                 ActionDisabled = "#2F678C",
-                TextDisabled = "#B0B0B0"
+                TextDisabled = "#B0B0B0",
+                Tertiary = "#265336"
             }
         };
 

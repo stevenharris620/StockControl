@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
 
 namespace StockControl.Shared.Requests
 {
@@ -12,9 +11,11 @@ namespace StockControl.Shared.Requests
             Description = String.Empty;
             UnitType = String.Empty;
             ImageChar64 = String.Empty;
+            SupplierId = String.Empty;
+            Name = String.Empty;
         }
         public string Id { get; set; }
-        [Required] public string? Name { get; set; }
+        public string Name { get; set; }
         public string PartCode { get; set; }
         public string Description { get; set; }
         public double? Cost { get; set; }

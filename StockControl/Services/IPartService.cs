@@ -59,12 +59,20 @@ namespace StockControl.Services
         public async Task<ApiResponse<PartDetail>> CreateAsync(PartDetail partDetail, FormFile? image)
         {
 
-            //  var form = PrepareClubForm(playerDetail, image, false);
+            var form = PreparePartForm(partDetail, image, false);
 
-            var response = await _httpClient.PostAsJsonAsync("api/Part", partDetail);
+            var response = await _httpClient.PostAsync("api/part", form);
             return await GetResponse(response);
 
 
+        }
+
+        public async Task<ApiResponse<PartDetail>> EditAsync(PartDetail partDetail, FormFile? image)
+        {
+            var form = PreparePartForm(partDetail, image, true);
+
+            var response = await _httpClient.PutAsync("api/part", form);
+            return await GetResponse(response);
         }
 
         private async Task<ApiResponse<PartDetail>> GetResponse(HttpResponseMessage response)
@@ -82,13 +90,7 @@ namespace StockControl.Services
         }
 
 
-        public async Task<ApiResponse<PartDetail>> EditAsync(PartDetail playerDetail, FormFile? image)
-        {
-            var form = PreparePartForm(playerDetail, image, true);
 
-            var response = await _httpClient.PutAsync("api/part", form);
-            return await GetResponse(response);
-        }
 
         public Task<ApiResponse<PartDetail>> DeleteAsync(string id)
         {

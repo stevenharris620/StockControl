@@ -224,6 +224,7 @@
 			else
 			{
 				var result = await PartService.CreateAsync(_model, formFile);
+				Id = result.Value.Id;
 			}
 
 			//await ModalInstance.CloseAsync(ModalResult.Ok(_model));

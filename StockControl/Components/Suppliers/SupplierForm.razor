@@ -10,8 +10,22 @@
 	 
 	 <DataAnnotationsValidator />
 	 
-	 <MudTextField Label="Name"  @bind-Value="@_model.Name"  Variant="Variant.Outlined"/>
-	 <ValidationMessage For="@(() => _model.Name)"/>
+@*	 <MudGrid>
+		 <MudItem xs="12">*@
+			 <MudTooltip Placement="Placement.Right"  Inline="true" Color="Color.Tertiary">
+				 <ChildContent >
+					 <MudTextField Style="Width:800px" Label="Name"  @bind-Value="@_model.Name"  Variant="Variant.Outlined"  For="@(() => @_model.Name)"/>
+				 </ChildContent>
+				 <TooltipContent>
+					 <MudText Typo="Typo.h6">Supplier Name</MudText>
+					 <MudText Typo="Typo.body2"><p style="max-width: 400px">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></MudText>
+				@*	 <MudIcon Icon="@Icons.Material.Filled.Star" />*@
+				 </TooltipContent>
+			 </MudTooltip>
+@*	 </MudItem>
+	 </MudGrid>*@
+
+
 	 <MudTextField Label="Address"  @bind-Value="@_model.Add1"  Variant="Variant.Outlined"/>
 	 <MudTextField   @bind-Value="@_model.Add2"  Variant="Variant.Outlined"/>
 	 <MudTextField  @bind-Value="@_model.Add3"  Variant="Variant.Outlined"/>
