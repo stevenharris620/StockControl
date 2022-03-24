@@ -1,11 +1,12 @@
-﻿<CascadingAuthenticationState>
+﻿@using StockControl.Components.Auth
+<CascadingAuthenticationState>
 	<Error>
 		<CascadingBlazoredModal>
 			<Router AppAssembly="@typeof(App).Assembly">
 				<Found Context="routeData">
 					<AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
 						<NotAuthorized>
-							No Access Yet
+			            	<LoginRedirect />
 						</NotAuthorized>
 					</AuthorizeRouteView>
 					<FocusOnNavigate RouteData="@routeData" Selector="h1" />
