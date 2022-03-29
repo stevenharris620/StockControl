@@ -2,6 +2,11 @@ using StockControl.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+//{
+//    EnvironmentName = Environments.Development
+//});
+
 // Add services to the container.
 
 builder.Services.AddControllers();

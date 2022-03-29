@@ -87,6 +87,8 @@ namespace StockControl.API.Extensions
                 Key = configuration["AuthSettings:Key"]
             });
 
+
+            // var test = configuration["MyCustomKey"];
             //services.AddScoped(sp => new EnviromentOptions
             //{
             //    ApiUrl = configuration["ApiUrl"]
