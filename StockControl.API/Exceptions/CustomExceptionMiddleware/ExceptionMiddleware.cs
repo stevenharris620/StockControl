@@ -39,6 +39,10 @@ namespace StockControl.API.Exceptions.CustomExceptionMiddleware
                 case NotSupportedException _:
                 case AlreadyExistsException _:
                 case ValidationException _:
+                    var validationException = (ValidationException)exception;
+                    code = HttpStatusCode.BadRequest;
+                    result = new ApiErrorResponse(validationException.Message,validationException.Errors);
+                    break;
                 case NotFoundException _:
                     code = HttpStatusCode.NotFound;
                     result = new ApiErrorResponse(exception.Message);

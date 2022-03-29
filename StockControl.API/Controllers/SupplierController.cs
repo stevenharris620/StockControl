@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StockControl.API.Exceptions;
 using StockControl.API.Mappers;
 using StockControl.API.Services;
 using StockControl.Shared.Requests;
@@ -7,7 +8,7 @@ using StockControl.Shared.Response;
 
 namespace StockControl.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     [ProducesResponseType(500, Type = typeof(ApiErrorResponse))]
@@ -39,6 +40,13 @@ namespace StockControl.API.Controllers
         [ProducesResponseType(400, Type = typeof(ApiErrorResponse))]
         public async Task<IActionResult> Create(SupplierDetail model)
         {
+            if (!ModelState.IsValid)
+            {
+                throw new ValidationException($"Validation Error", errors: ModelState.Values.SelectMany(x => x.Errors)
+                    .Select(e => e.ErrorMessage)
+                    //.Where(y => y.Count > 0)
+                    .ToArray());
+            }
             var supplier = await _supplierService.CreateAsync(model);
 
             return Ok(new ApiResponse<SupplierDetail>(_supplierMapper.Map_Supplier_To_SupplierDetail(supplier, new SupplierDetail()),
