@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace StockControl.Shared.Requests
 {
@@ -15,6 +16,8 @@ namespace StockControl.Shared.Requests
             Name = String.Empty;
         }
         public string Id { get; set; }
+
+        [Required]
         public string Name { get; set; }
         public string PartCode { get; set; }
         public string Description { get; set; }

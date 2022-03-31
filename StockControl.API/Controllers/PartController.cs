@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StockControl.API.Mappers;
 using StockControl.API.Services;
 using StockControl.Shared.Requests;
@@ -6,6 +7,7 @@ using StockControl.Shared.Response;
 
 namespace StockControl.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     [ProducesResponseType(500, Type = typeof(ApiErrorResponse))]

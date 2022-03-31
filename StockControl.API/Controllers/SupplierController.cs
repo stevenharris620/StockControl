@@ -8,7 +8,7 @@ using StockControl.Shared.Response;
 
 namespace StockControl.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     [ProducesResponseType(500, Type = typeof(ApiErrorResponse))]
@@ -47,6 +47,7 @@ namespace StockControl.API.Controllers
                     //.Where(y => y.Count > 0)
                     .ToArray());
             }
+
             var supplier = await _supplierService.CreateAsync(model);
 
             return Ok(new ApiResponse<SupplierDetail>(_supplierMapper.Map_Supplier_To_SupplierDetail(supplier, new SupplierDetail()),

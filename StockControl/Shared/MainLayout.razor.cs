@@ -47,7 +47,7 @@ namespace StockControl.Shared
                 DrawerBackground = "#093958",
                 DrawerText = "#FFFFFF",
                 Surface = "#093958",
-                ActionDefault = "#0C1217",
+                ActionDefault = "#FFFFFF",
                 ActionDisabled = "#2F678C",
                 TextDisabled = "#B0B0B0",
                 Tertiary = "#265336"
@@ -76,7 +76,7 @@ namespace StockControl.Shared
         //private async Task ChangeThemeAsync()
         //{
 
-        //    if (_themeName == "light")
+        //    if (_themeName == "light")--mud-palette-action-default: #0c1217ff;
         //    {
         //        _currentTheme = _darkTheme;
         //        _themeName = "dark";

@@ -22,8 +22,8 @@
 			<div class="col-7">
 				<div class="row">
 					<div class="col-12">
-						<MudTextField Label="Name" @bind-Value="@_model.Name" Variant="Variant.Outlined"/>
-						<ValidationMessage For="@(() => _model.Name)"/>
+						<MudTextField Label="Name" @bind-Value="@_model.Name" Variant="Variant.Outlined" For="@(() => @_model.Name)"/>
+			@*			<ValidationMessage For="@(() => _model.Name)"/>*@
 					</div>
 				</div>
 				<div class="row">
