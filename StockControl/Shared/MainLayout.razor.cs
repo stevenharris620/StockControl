@@ -68,7 +68,7 @@ namespace StockControl.Shared
                 DrawerText = "#0C1217",
                 Surface = "#E4FAFF",
                 ActionDefault = "#0C1217",
-                ActionDisabled = "#2F678C",
+                ActionDisabled = "#bec0c2",
                 TextDisabled = "#686767",
             }
         };

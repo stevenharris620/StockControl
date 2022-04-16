@@ -14,34 +14,44 @@
 		              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
 	</ToolBarContent>
 	<HeaderContent>
-		@*<MudTh><MudTableSortLabel SortLabel="image_field" T="PartDetail">Image</MudTableSortLabel></MudTh>*@
+		<MudTh><MudTableSortLabel SortLabel="image_field" T="PartDetail">Image</MudTableSortLabel></MudTh>
 		<MudTh><MudTableSortLabel SortLabel="name_field" T="PartDetail">Name</MudTableSortLabel></MudTh>
 		<MudTh><MudTableSortLabel SortLabel="partcode_field" T="PartDetail">Part Code</MudTableSortLabel></MudTh>
 		<MudTh><MudTableSortLabel SortLabel="cost_field" T="PartDetail">Cost</MudTableSortLabel></MudTh>
 		<MudTh><MudTableSortLabel SortLabel="stocklevel_field" T="PartDetail">Stock Level</MudTableSortLabel></MudTh>
 		<MudTh><MudTableSortLabel SortLabel="action_field" T="PartDetail">Actions</MudTableSortLabel></MudTh>
 	</HeaderContent>
-	<RowTemplate>
-		@*<MudTd DataLabel="Name">@context.Image</MudTd>*@
-		<MudTd DataLabel="Name">@context.Name</MudTd>
-		<MudTd DataLabel="PartCode">@context.PartCode</MudTd>
-		<MudTd DataLabel="Cost">@context.Cost</MudTd>
-		<MudTd DataLabel="Stock Level">@context.StockLevel</MudTd>
-		<MudTd DataLabel="Actions">
-			<MudIconButton Icon="@Icons.Material.Filled.Preview" Color="Color.Default"
-			               OnClick="async ()=> await OnViewClicked.InvokeAsync(context)" />
-			
-			<AuthorizeView Roles="Manager" Context="test">
-				<Authorized Context="test" >
-					<MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default"
-								   OnClick="async () => await OnEditClicked.InvokeAsync(context)" />
+    <RowTemplate>
+		@if (string.IsNullOrEmpty(@context.ImageChar64))
 
-				</Authorized>
-			</AuthorizeView>
-			@*		<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error"
+		    {
+		        <MudTd DataLabel="Image"></MudTd>
+		    }
+
+		else
+		{
+		    <MudTd DataLabel="Image"><img src="@context.ImageChar64" style="height: 50px; width: 50px; border-radius: 50%;"/></MudTd>
+		}
+
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="PartCode">@context.PartCode</MudTd>
+        <MudTd DataLabel="Cost">@context.Cost</MudTd>
+        <MudTd DataLabel="Stock Level">@context.StockLevel</MudTd>
+        <MudTd DataLabel="Actions">
+            <MudIconButton Icon="@Icons.Material.Filled.Preview" Color="Color.Default"
+                           OnClick="async () => await OnViewClicked.InvokeAsync(context)"/>
+
+            <AuthorizeView Roles="Manager" Context="test">
+                <Authorized Context="test">
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default"
+                                   OnClick="async () => await OnEditClicked.InvokeAsync(context)"/>
+
+                </Authorized>
+            </AuthorizeView>
+            @*		<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error"
 						   OnClick="async ()=> await OnDeleteClicked.InvokeAsync(context)" />*@
-		</MudTd>
-	</RowTemplate>
+        </MudTd>
+    </RowTemplate>
 	<NoRecordsContent>
 		<MudText>No matching records found</MudText>
 	</NoRecordsContent>

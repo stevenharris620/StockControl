@@ -16,7 +16,7 @@
 		</MudMenu>
 	</Authorized>
 	<NotAuthorized>
-		<MudIconButton Icon="@Icons.Filled.Login" Color="Color.Secondary" OnClick='()=> _navigationManager.NavigateTo("/auth/>login")'></MudIconButton>
+		<MudIconButton Icon="@Icons.Filled.Login" Color="Color.Secondary" OnClick='()=> _navigationManager.NavigateTo("/authentication/login")'></MudIconButton>
 	</NotAuthorized>
 </AuthorizeView>
 
@@ -28,6 +28,6 @@
 		await _localStorageService.RemoveItemAsync("expiry_date");
 
 		await _authenticationStateProvider.GetAuthenticationStateAsync();
-		_navigationManager.NavigateTo("/authentication/login");
+		_navigationManager.NavigateTo("/");
 	}
 }
