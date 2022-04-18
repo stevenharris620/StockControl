@@ -21,7 +21,7 @@ namespace StockControl.Shared
                     break;
                 case not null:
                     Snackbar.Configuration.SnackbarVariant = Variant.Filled;
-
+                    Snackbar.Configuration.RequireInteraction = true;
                     Snackbar.Add("Something went wrong in Front End", Severity.Error);
                     break;
             }

@@ -69,6 +69,7 @@ namespace StockControl.Components
 
             try
             {
+               // throw new Exception("test");
                 var result = await SupplierService.GetByIdAsync(Id);
                 _model = result.Value;
             }
