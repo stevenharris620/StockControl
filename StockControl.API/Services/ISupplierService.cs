@@ -33,6 +33,7 @@ public class SupplierService : ISupplierService
 
     public async Task<Supplier> GetByIdAsync(string id)
     {
+        //throw new Exception("BACK END SUPPLIER");
         var supplier = await _unitOfWork.Suppliers.GetByIdAsync(id);
         if (supplier == null) throw new NotFoundException($"Supplier with Id {id} cannot be found");
 
@@ -42,16 +43,8 @@ public class SupplierService : ISupplierService
     {
         var supplier = _supplierMapper.Map_SupplierDetail_To_Supplier(model, new Supplier());
 
-        try
-        {
-            await _unitOfWork.Suppliers.CreateAsync(supplier);
-            await _unitOfWork.CommitChangesAsync(_identityOptions.UserId);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        await _unitOfWork.Suppliers.CreateAsync(supplier);
+         await _unitOfWork.CommitChangesAsync(_identityOptions.UserId);
 
         return supplier;
     }
