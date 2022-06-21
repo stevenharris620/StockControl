@@ -1,0 +1,57 @@
+# DOCKER STACK - Keycloak, Postgres, pgadmin
+
+# pgadmin - browser localhost:5555
+  
+# docker-compose up -d (from the folder that this file is in)
+version: "3"
+
+volumes:
+  postgres9_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+services:
+  postgres9:
+    image: postgres:latest
+    restart: always
+    volumes:
+      - postgres9_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: StockDb
+      POSTGRES_USER: SteveHome
+      POSTGRES_PASSWORD: password
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    ports:
+      - 5555:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: steven.harris620@ntlworld.com
+      PGADMIN_DEFAULT_PASSWORD: password
+
+  client:
+    image: docker1750/blazorclient:latest
+    restart: always
+    ports:
+      - 6300:80
+    depends_on:
+      - postgres9
+      
+  api:
+    image: docker1750/blazorstockapi:latest
+    restart: always
+    ports:
+      - 7197:80
+    depends_on:
+      - postgres9
+
+
+
+      
+
