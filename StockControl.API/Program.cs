@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using StockControl.API.Extensions;
+using StockControl.API.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +34,13 @@ builder.Services.AddApplicationDatabaseContext(builder.Configuration);
 
 
 var app = builder.Build();
+
+// Ensure the database is created
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate(); // This will apply any pending migrations and create the database if it doesn't exist
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
